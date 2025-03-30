@@ -1,0 +1,130 @@
+{
+  "R": {
+    "Version": "4.4.0",
+    "Repositories": [
+      {
+        "Name": "CRAN",
+        "URL": "https://packagemanager.posit.co/cran/latest"
+      }
+    ]
+  },
+  "Packages": {
+    "assertthat": {
+      "Package": "assertthat",
+      "Version": "0.2.1",
+      "NeedsCompilation": "no",
+      "Repository": "CRAN",
+      "Source": "Repository"
+    },
+    "covr": {
+      "Package": "covr",
+      "Version": "3.6.4",
+      "NeedsCompilation": "yes",
+      "Repository": "CRAN",
+      "Source": "Repository"
+    },
+    "desc": {
+      "Package": "desc",
+      "Version": "1.4.3",
+      "OS_type": null,
+      "NeedsCompilation": "no",
+      "Repository": "CRAN",
+      "Source": "Repository",
+      "Path": "/root/.cache/R/renv/source/repository/desc/desc_1.4.3.tar.gz"
+    },
+    "devtools": {
+      "Package": "devtools",
+      "Version": "2.4.5",
+      "NeedsCompilation": "no",
+      "Repository": "CRAN",
+      "Source": "Repository"
+    },
+    "evaluate": {
+      "Package": "evaluate",
+      "Version": "1.0.3",
+      "OS_type": null,
+      "NeedsCompilation": "no",
+      "Repository": "CRAN",
+      "Source": "Repository",
+      "Path": "/root/.cache/R/renv/source/repository/evaluate/evaluate_1.0.3.tar.gz"
+    },
+    "goodpractice": {
+      "Package": "goodpractice",
+      "Version": "1.0.2",
+      "Source": "Repository"
+    },
+    "lintr": {
+      "Package": "lintr",
+      "Version": "3.2.0",
+      "NeedsCompilation": "no",
+      "Repository": "CRAN",
+      "Source": "Repository"
+    },
+    "renv": {
+      "Package": "renv",
+      "Version": "1.1.4",
+      "NeedsCompilation": "no",
+      "Repository": "CRAN",
+      "Source": "Repository"
+    },
+    "roxygen2": {
+      "Package": "roxygen2",
+      "Version": "7.3.2",
+      "OS_type": null,
+      "NeedsCompilation": "yes",
+      "Repository": "CRAN",
+      "Source": "Repository",
+      "Path": "/root/.cache/R/renv/source/repository/roxygen2/roxygen2_7.3.2.tar.gz"
+    },
+    "spelling": {
+      "Package": "spelling",
+      "Version": "2.3.1",
+      "NeedsCompilation": "no",
+      "Repository": "CRAN",
+      "Source": "Repository"
+    },
+    "stringr": {
+      "Package": "stringr",
+      "Version": "1.5.1",
+      "OS_type": null,
+      "NeedsCompilation": "no",
+      "Repository": "CRAN",
+      "Source": "Repository",
+      "Path": "/root/.cache/R/renv/source/repository/stringr/stringr_1.5.1.tar.gz"
+    },
+    "testthat": {
+      "Package": "testthat",
+      "Version": "3.2.3",
+      "OS_type": null,
+      "NeedsCompilation": "yes",
+      "Repository": "CRAN",
+      "Source": "Repository",
+      "Path": "/root/.cache/R/renv/source/repository/testthat/testthat_3.2.3.tar.gz"
+    },
+    "usethis": {
+      "Package": "usethis",
+      "Version": "3.1.0",
+      "NeedsCompilation": "no",
+      "Repository": "CRAN",
+      "Source": "Repository"
+    },
+    "waldo": {
+      "Package": "waldo",
+      "Version": "0.6.1",
+      "OS_type": null,
+      "NeedsCompilation": "no",
+      "Repository": "CRAN",
+      "Source": "Repository",
+      "Path": "/root/.cache/R/renv/source/repository/waldo/waldo_0.6.1.tar.gz"
+    },
+    "withr": {
+      "Package": "withr",
+      "Version": "3.0.2",
+      "OS_type": null,
+      "NeedsCompilation": "no",
+      "Repository": "CRAN",
+      "Source": "Repository",
+      "Path": "/root/.cache/R/renv/source/repository/withr/withr_3.0.2.tar.gz"
+    }
+  }
+}

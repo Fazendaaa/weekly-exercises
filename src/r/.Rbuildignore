@@ -1,0 +1,5 @@
+^renv$
+^renv\.lock$
+^weekly-exercises\.Rproj$
+^\.Rproj\.user$
+^\.lintr$
