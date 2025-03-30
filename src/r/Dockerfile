@@ -8,7 +8,7 @@ RUN [ "apt", "update" ]
 RUN [ "apt", "install", "--yes", "--allow-downgrades", \
   "git", \
   "pandoc", \
-  "libexpat1=2.6.4-1", \
+  "libexpat1=2.7.1-1", \
   "libexpat1-dev", \
   "libcurl4-openssl-dev", \
   "libgmp3-dev", \

@@ -1,4 +1,4 @@
-Package: weekly-exercises
+Package: WeeklyExercises
 Title: What the Package Does (One Line, Title Case)
 Version: 0.0.0.9000
 Authors@R: 
@@ -8,7 +8,7 @@ Description: What the package does (one paragraph).
 License: file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.3.2
 Suggests: 
     assertthat (>= 0.2.1),
     covr (>= 3.6.4),
@@ -24,5 +24,6 @@ Imports:
     magrittr
 Language: en-US
 Config/testthat/edition: 2
+Config/testthat/parallel: true
 URL: https://github.com/Fazendaaa/weekly-exercises
 BugReports: https://github.com/Fazendaaa/weekly-exercises/issues
