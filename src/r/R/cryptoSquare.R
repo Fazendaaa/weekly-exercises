@@ -56,17 +56,36 @@
 # Notice that were we to stack these, we could visually decode the ciphertext
 # back in to the original message:
 #
-# "imtgdvs"
-# "fearwer"
-# "mayoogo"
-# "anouuio"
-# "ntnnlvt"
-# "wttddes"
-# "aohghn "
-# "sseoau "
+#   "imtgdvs"
+#   "fearwer"
+#   "mayoogo"
+#   "anouuio"
+#   "ntnnlvt"
+#   "wttddes"
+#   "aohghn "
+#   "sseoau "
+#
+# Sources:
+#   - https://exercism.org/tracks/r/exercises/crypto-square
+#   - https://users.csc.calpoly.edu/~jdalbey/103/Projects/ProgrammingPractice.html
 #
 
 #'
 #' @export
 #'
-cryptoSquare <- function() {}
+cryptoSquare <- function(text) {
+  normalized <- gsub("[^a-z0-9]", "", tolower(text))
+  size <- nchar(normalized)
+  columns <- ceiling(sqrt(size))
+  rows <- floor(sqrt(size))
+  broken <- paste0(normalized, strrep(" ", columns * rows - size))
+  chunks <- substring(broken, seq(1, size, columns),
+                      seq(columns, size + columns, columns))
+
+  return (sapply(seq_len(columns), function(i) {
+      paste0(sapply(chunks, function(chunk) {
+        substring(chunk, i, i)
+      }), collapse = "")
+    })
+  )
+}

@@ -2,12 +2,17 @@
 context('Testing Crypto Square')
 
 test_that('Wanted example', {
-  prisoners <- 100
-  simulations <- 1000
-  output <- list(
-    random =  0,
-    optimal = 31
+  input <- 'If man was meant to stay on the ground, god would have given us roots.'
+  output <- c(
+    'imtgdvs',
+    'fearwer',
+    'mayoogo',
+    'anouuio',
+    'ntnnlvt',
+    'wttddes',
+    'aohghn ',
+    'sseoau '
   )
 
-  expect_equal(prisonersChallenge(prisoners, simulations), output, tolerance = 1e-1)
+  expect_equal(cryptoSquare(input), output)
 })
