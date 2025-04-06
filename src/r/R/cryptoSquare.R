@@ -82,9 +82,9 @@ cryptoSquare <- function(text) {
   chunks <- substring(broken, seq(1, size, columns),
                       seq(columns, size + columns, columns))
 
-  return (sapply(seq_len(columns), function(i) {
+  return (sapply(seq_len(columns), function(letter) {
       paste0(sapply(chunks, function(chunk) {
-        substring(chunk, i, i)
+        substring(chunk, letter, letter)
       }), collapse = "")
     })
   )
