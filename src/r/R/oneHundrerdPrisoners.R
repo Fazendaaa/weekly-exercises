@@ -33,7 +33,7 @@ randomDraw <- function(prisoners, simulations) {
     escape <- rep(FALSE, prisoners)
     ticket <- sample(1:prisoners)
 
-    while (inner < length(prisoner)){
+    while (inner < length(prisoners)){
       escape[inner] <- inner %in% sample(ticket,50)
       inner <- inner + 1
     }

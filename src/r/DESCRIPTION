@@ -12,7 +12,6 @@ RoxygenNote: 7.3.2
 Suggests: 
     assertthat (>= 0.2.1),
     covr (>= 3.6.4),
-    devtools (>= 2.4.5),
     goodpractice (>= 1.0.2),
     lintr (>= 3.2.0),
     renv (>= 1.1.4),
@@ -21,6 +20,7 @@ Suggests:
     testthat (>= 3.1.8),
     usethis (>= 3.1.0)
 Imports: 
+    devtools (>= 2.4.5),
     magrittr
 Language: en-US
 Config/testthat/edition: 2
