@@ -20,3 +20,19 @@
 # Reference:
 #   - https://rosettacode.org/wiki/100_doors
 #
+
+#'
+#' @export
+#'
+oneHundredDoors <- function(limit) {
+  doors <- rep(FALSE, limit)
+  item <- 1
+
+  while (item <= limit) {
+    visits <- seq(item, limit, item)
+    doors[visits] <- FALSE == doors[visits]
+    item <- item + 1
+  }
+
+  return(doors)
+}
