@@ -33,6 +33,7 @@
 #
 # Reference:
 #   - https://www.reddit.com/r/dailyprogrammer/comments/13m4bz1/20230519_challenge_400_intermediate_practical/
+#   - https://rosettacode.org/wiki/Practical_numbers
 #
 
 #'
