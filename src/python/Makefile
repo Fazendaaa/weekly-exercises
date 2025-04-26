@@ -1,3 +1,6 @@
+#!make
+include .env
+
 REGISTRY_OWNER:=fazenda
 PROJECT_NAME:=weekly-exercises-py
 PROJECT_TAG:=latest
@@ -38,3 +41,18 @@ poetry-build:
 
 check: poetry-build
 	@twine check dist/*
+
+sonar:
+	@docker run \
+		--rm \
+		--network=host \
+		--workdir "/usr/src/" \
+		--volume "${HOME}/.sonarqube/certs/:/opt/sonar-scanner/.sonar/ssl/:ro" \
+		--volume "${PWD}:/usr/src" \
+		sonarsource/sonar-scanner-cli:11.3 \
+		-X \
+		-Dsonar.projectKey=${SONARQUBE_PROJECT_NAME} \
+		-Dsonar.scanner.truststorePassword=${DNS_PASSWORD} \
+		-Dsonar.sources=. \
+		-Dsonar.host.url=https://sonarqube.docker.localhost/ \
+		-Dsonar.login=${SONARQUBE_PROJECT_KEY}

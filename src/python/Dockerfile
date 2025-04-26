@@ -23,7 +23,7 @@ RUN [ "pip3", "install", "poetry" ]
 
 WORKDIR /usr/src/
 
-#USER appuser
+USER appuser
 
 COPY poetry.lock .
 COPY pyproject.toml .
