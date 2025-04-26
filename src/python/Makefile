@@ -5,7 +5,10 @@ REGISTRY_OWNER:=fazenda
 PROJECT_NAME:=weekly-exercises-py
 PROJECT_TAG:=latest
 
-all: interact
+all: install
+
+install:
+	@poetry install --all-groups
 
 build:
 	@docker buildx build --load --tag ${REGISTRY_OWNER}/${PROJECT_NAME}:${PROJECT_TAG} .

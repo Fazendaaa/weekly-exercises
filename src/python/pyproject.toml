@@ -21,4 +21,10 @@ typing-extensions = "^4.13.2"
 mypy = "^1.15.0"
 
 [tool.pytest.ini_options]
-addopts = ["--import-mode=importlib"]
+addopts = ["--import-mode=importlib", "-ra", "-q", "-p", "profiling"]
+pythonpath = "./src"
+testpaths = ["tests"]
+
+[tool.mypy]
+warn_return_any = true
+warn_unused_configs = true
