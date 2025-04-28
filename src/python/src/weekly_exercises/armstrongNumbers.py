@@ -20,7 +20,7 @@
 #
 
 
-def armstrongNumbers(value: int):
+def armstrongNumbers(value: int) -> bool:
     digits = [int(x) for x in str(value)]
 
     return sum([pow(int(x), len(digits)) for x in digits]) == value

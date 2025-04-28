@@ -56,7 +56,7 @@
 #
 
 
-def luhn(input: str):
+def luhn(input: str) -> bool:
     digits = [int(x) for x in input.replace(" ", "")]
 
     for index in range(0, len(digits), 2):
