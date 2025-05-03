@@ -1,4 +1,4 @@
-from weekly_exercises.ATMHeist import maximumThrill
+from src.weekly_exercises.ATMHeist import maximumThrill
 
 
 def test_first_example():
@@ -9,7 +9,7 @@ def test_second_example():
     assert 10 == maximumThrill([2, 3, 4, 5])
 
 
-def test_thrid_example():
+def test_third_example():
     assert 26 == maximumThrill([10, 10, 11, 13, 7, 8, 9])
 
 

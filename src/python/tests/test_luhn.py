@@ -1,4 +1,4 @@
-from weekly_exercises.luhn import luhn
+from src.weekly_exercises.luhn import luhn
 
 
 def test_first_example():

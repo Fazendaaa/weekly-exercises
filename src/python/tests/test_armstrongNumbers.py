@@ -1,4 +1,4 @@
-from weekly_exercises.armstrongNumbers import armstrongNumbers
+from src.weekly_exercises.armstrongNumbers import armstrongNumbers
 
 
 def test_first_example():

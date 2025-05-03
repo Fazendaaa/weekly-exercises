@@ -1,4 +1,4 @@
-from weekly_exercises.puzzleSolver import PuzzleSolver
+from src.weekly_exercises.puzzleSolver import PuzzleSolver
 
 
 def test_first_example():

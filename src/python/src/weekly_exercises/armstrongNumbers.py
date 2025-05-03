@@ -19,8 +19,10 @@
 #   - https://en.wikipedia.org/wiki/Narcissistic_number
 #
 
+from typing import cast
+
 
 def armstrongNumbers(value: int) -> bool:
     digits = [int(x) for x in str(value)]
 
-    return sum([pow(int(x), len(digits)) for x in digits]) == value
+    return cast(bool, sum([pow(int(x), len(digits)) for x in digits]) == value)

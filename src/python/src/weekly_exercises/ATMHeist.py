@@ -54,10 +54,8 @@
 #   - https://www.codewars.com/kata/5d8108a41e94580023bd6419
 #
 
-from typing import List
 
-
-def maximumThrill(atms: List[int]) -> int:
+def maximumThrill(atms: list[int]) -> int:
     maxThrill = 0
 
     for pivotIndex, pivotATM in enumerate(atms):
