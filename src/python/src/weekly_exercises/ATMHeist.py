@@ -55,23 +55,18 @@
 #
 
 
-def ATMHeist(atms):
-    # Initialize variables to store the maximum thrill value and the index of the ATM with the maximum thrill value
+def maximumThrill(atms):
     maxThrill = 0
-    maxThrillIndex = 0
 
-    # Iterate over each ATM
-    for i in range(len(atms)):
-        # Calculate the thrill value for the current ATM
-        thrill = atms[i] * sum([abs(i - j) for j in range(len(atms))])
+    for pivotIndex, pivotATM in enumerate(atms):
+        for secondaryIndex, secondaryATM in enumerate(atms):
+            if pivotIndex == secondaryIndex:
+                continue
 
-        # Update the maximum thrill value and the index of the ATM with the maximum thrill value
-        if thrill > maxThrill:
-            maxThrill = thrill
-            maxThrillIndex = i
+            distance = abs(pivotIndex - secondaryIndex)
+            thrill = pivotATM + secondaryATM + distance
 
-    # Calculate the maximum thrill value by adding the value of the ATM with the maximum thrill value to the value of the ATM with the maximum thrill value transferred to
-    maxThrill += atms[maxThrillIndex]
+            if thrill > maxThrill:
+                maxThrill = thrill
 
-    # Return the maximum thrill value
     return maxThrill
