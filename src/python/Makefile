@@ -45,6 +45,9 @@ poetry-build:
 check: poetry-build
 	@twine check dist/*
 
+run:
+	@docker-compose up --build --remove-orphans
+
 sonar:
 	@docker run \
 		--rm \
