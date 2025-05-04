@@ -19,6 +19,7 @@ pytest-cov = "^6.1.1"
 snakeviz = "^2.2.2"
 typing-extensions = "^4.13.2"
 mypy = "^1.15.0"
+pylint = "^3.3.7"
 
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib", "-ra", "-q", "-p", "profiling"]
@@ -28,3 +29,5 @@ testpaths = ["tests"]
 [tool.mypy]
 warn_return_any = true
 warn_unused_configs = true
+disallow_untyped_defs = true
+mypy_path = ["src"]

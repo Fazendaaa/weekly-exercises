@@ -1,4 +1,4 @@
-from src.weekly_exercises.ATMHeist import maximumThrill
+from weekly_exercises.ATMHeist import maximumThrill
 
 
 def test_first_example():

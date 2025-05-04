@@ -1,4 +1,4 @@
-FROM python:3.13.0-alpine3.20
+FROM python:3.13.3-alpine3.21
 LABEL author="fazenda"
 LABEL project="weekly-exercises-py"
 
@@ -9,17 +9,18 @@ RUN [ "adduser", "-S", "appuser", "-G", "appgroup" ]
 USER root
 
 RUN [ "apk", "add", "--no-cache", \
-  "gcc", \
-  "linux-headers", \
-  "mariadb-connector-c-dev", \
-  "musl-dev", \
-  "mysql-client", \
-  "pkgconf", \
-  "python3-dev", \
-  "rust" \
+  "gcc=14.2.0-r4", \
+  "linux-headers=6.6-r1", \
+  "mariadb-connector-c-dev=3.3.10-r0", \
+  "musl-dev=1.2.5-r9", \
+  "mysql-client=11.4.5-r0", \
+  "pkgconf=2.3.0-r0", \
+  "python3-dev=3.12.10-r0", \
+  "rust=1.83.0-r0", \
+  "sqlite-libs=3.48.0-r1" \
   ]
 
-RUN [ "pip3", "install", "poetry" ]
+RUN [ "pip3", "install", "--no-cache-dir", "poetry==2.1.3" ]
 
 WORKDIR /usr/src/
 

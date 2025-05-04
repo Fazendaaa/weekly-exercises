@@ -12,6 +12,9 @@ install:
 
 build:
 	@docker buildx build --load --tag ${REGISTRY_OWNER}/${PROJECT_NAME}:${PROJECT_TAG} .
+	@docker run --rm \
+		-v /var/run/docker.sock:/var/run/docker.sock \
+		aquasec/trivy image --severity=HIGH,CRITICAL ${REGISTRY_OWNER}/${PROJECT_NAME}:${PROJECT_TAG}
 
 shell: build
 	@docker run \
@@ -38,6 +41,9 @@ test: build
 		${REGISTRY_OWNER}/${PROJECT_NAME}:${PROJECT_TAG} \
 		poetry run pytest --profile-svg && \
 		poetry run python -m snakeviz prof/combined.prof
+
+uml:
+	@poetry run pyreverse -o png ./src/weekly_exercises/
 
 poetry-build:
 	@poetry build
