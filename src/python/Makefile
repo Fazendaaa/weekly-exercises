@@ -42,6 +42,9 @@ test: build
 		poetry run pytest --profile-svg && \
 		poetry run python -m snakeviz prof/combined.prof
 
+complexity:
+	@poetry run complexipy .
+
 uml:
 	@poetry run pyreverse -o png ./src/weekly_exercises/
 

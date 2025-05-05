@@ -20,6 +20,7 @@ snakeviz = "^2.2.2"
 typing-extensions = "^4.13.2"
 mypy = "^1.15.0"
 pylint = "^3.3.7"
+complexipy = "^2.1.1"
 
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib", "-ra", "-q", "-p", "profiling"]
