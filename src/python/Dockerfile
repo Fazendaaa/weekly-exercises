@@ -1,4 +1,4 @@
-FROM python:3.13.3-alpine3.21
+FROM python:3.14.0a7-alpine3.21
 LABEL author="fazenda"
 LABEL project="weekly-exercises-py"
 
@@ -8,6 +8,8 @@ RUN [ "adduser", "-S", "appuser", "-G", "appgroup" ]
 
 USER root
 
+RUN [ "apk", "update" ]
+RUN [ "apk", "upgrade" ]
 RUN [ "apk", "add", "--no-cache", \
   "gcc=14.2.0-r4", \
   "linux-headers=6.6-r1", \
@@ -17,10 +19,12 @@ RUN [ "apk", "add", "--no-cache", \
   "pkgconf=2.3.0-r0", \
   "python3-dev=3.12.10-r0", \
   "rust=1.83.0-r0", \
-  "sqlite-libs=3.48.0-r1" \
+  "sqlite-libs=3.48.0-r2" \
   ]
-
-RUN [ "pip3", "install", "--no-cache-dir", "poetry==2.1.3" ]
+RUN [ "apk", "add", \
+  "--repository=https://dl-cdn.alpinelinux.org/alpine/edge/community", \
+  "poetry=2.0.1-r0" \
+  ]
 
 WORKDIR /usr/src/
 
