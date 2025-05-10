@@ -2,7 +2,7 @@ from weekly_exercises.slidePuzzle import slidePuzzle
 
 
 def test_first_example():
-    assert "rrruldluuldrurdddluulurrrdlddruldluurddlulurruldrrdd" == slidePuzzle(
+    assert "rrrulddluuuldrurdddrullulurrrddldluurddlulurruldrdrd" == slidePuzzle(
         [
             [15, 14, 1, 6],
             [9, 11, 4, 12],

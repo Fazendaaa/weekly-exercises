@@ -54,28 +54,35 @@ def slidePuzzle(puzzle: list[list[int]]) -> str:
     Returns:
         str: A string representing the sequence of moves to solve the puzzle.
     """
-    size = len(puzzle)
+    dimension = len(puzzle)
     new_puzzle = flatten(puzzle)
-    goal = [i for i in range(1, size**2)] + [0]
-
-    # Define the possible moves and their corresponding directions
-    moves = {"up": -4, "down": 4, "left": -1, "right": 1}
-
-    # Define the directions for printing the solution
-    directions = {-4: "up", 4: "down", -1: "left", 1: "right"}
-
-    # Initialize the queue with the starting puzzle state and an empty list for the solution
+    goal = [i for i in range(1, dimension**2)] + [0]
     queue = [(new_puzzle, [])]
-
-    # Initialize a set to keep track of visited states
     visited = set()
+    moves = {"up": -dimension, "down": dimension, "left": -1, "right": 1}
+    directions = {-dimension: "u", dimension: "d", -1: "l", 1: "r"}
+
+    def checkResult(path: list[int]) -> str:
+        """
+        Validates the solution path.
+
+        Args:
+            path (list[int]): The sequence of moves to solve the puzzle.
+
+        Returns:
+            str: A string representing the sequence of moves to solve the puzzle.
+        """
+        return (
+            "" if goal != path else "".join([directions[moves[move]] for move in path])
+        )
 
     # Perform a breadth-first search to find the solution
     while queue:
-        state, path = queue.pop(0)
+        state, path = queue.pop()
+        result = checkResult(path)
 
-        if state == goal:
-            return "".join([directions[moves[move]] for move in path])
+        if result:
+            return result
 
         # Generate all possible moves from the current state
         for _, offset in moves.items():
@@ -83,7 +90,7 @@ def slidePuzzle(puzzle: list[list[int]]) -> str:
             index = state.index(0)
             new_index = index + offset
 
-            if new_index < 0 or new_index > 15:
+            if new_index < 0 or new_index > dimension:
                 continue
 
             new_state[index], new_state[new_index] = (
@@ -91,8 +98,18 @@ def slidePuzzle(puzzle: list[list[int]]) -> str:
                 new_state[index],
             )
 
-            if tuple(new_state) in visited:
+            movements = tuple(new_state)
+
+            if movements in visited:
                 continue
 
-            queue.append((new_state, path + [offset]))
-            visited.add(tuple(new_state))
+            new_path = path + [offset]
+            result = checkResult(new_path)
+
+            if result:
+                return result
+
+            queue.append((new_state, new_path))
+            visited.add(movements)
+
+    return ""

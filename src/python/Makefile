@@ -1,5 +1,8 @@
 #!make
-include .env
+ifneq (,$(wildcard ./.env))
+	include .env
+	export
+endif
 
 REGISTRY_OWNER:=fazenda
 PROJECT_NAME:=weekly-exercises-py
@@ -12,6 +15,8 @@ install:
 
 build:
 	@docker buildx build --load --tag ${REGISTRY_OWNER}/${PROJECT_NAME}:${PROJECT_TAG} .
+
+security:
 	@docker run --rm \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		aquasec/trivy image --severity=HIGH,CRITICAL ${REGISTRY_OWNER}/${PROJECT_NAME}:${PROJECT_TAG}
@@ -37,6 +42,8 @@ interact: build
 test: build
 	@docker run \
 		--rm \
+		--workdir /usr/src \
+		--volume $(shell pwd):/usr/src \
 		-it \
 		${REGISTRY_OWNER}/${PROJECT_NAME}:${PROJECT_TAG} \
 		poetry run pytest --profile-svg && \
@@ -44,6 +51,8 @@ test: build
 
 complexity:
 	@poetry run complexipy .
+
+check: build security complexipy
 
 uml:
 	@poetry run pyreverse -o png ./src/weekly_exercises/
