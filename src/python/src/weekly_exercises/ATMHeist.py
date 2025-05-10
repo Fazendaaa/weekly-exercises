@@ -56,6 +56,25 @@
 
 
 def maximumThrill(atms: list[int]) -> int:
+    """
+    Calculate the maximum thrill value from a list of ATMs.
+
+    The thrill value is determined by the sum of the values of two ATMs and the distance between them.
+    The function iterates through all possible pairs of ATMs to find the maximum thrill value.
+
+    CodeComplexity:
+        9
+
+    Args:
+        atms (list[int]): A list of integers representing the values of ATMs.
+
+    Returns:
+        int: The maximum thrill value calculated from the list of ATMs.
+
+    Example:
+        >>> maximumThrill([1, 3, 5])
+        9
+    """
     maxThrill = 0
 
     for pivotIndex, pivotATM in enumerate(atms):
