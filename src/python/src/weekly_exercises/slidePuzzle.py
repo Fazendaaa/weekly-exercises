@@ -91,16 +91,16 @@ def slidePuzzle(puzzle: list[list[int]]) -> str:
 
         # Generate all possible moves from the current state
         for _, offset in moves.items():
-            newState = deepcopy(state)  # state[:]
-            index = newState.index(0)
-            newIndex = index + offset
+            pivot = state.index(0)
+            newIndex = pivot + offset
 
             if newIndex < 0 or newIndex > (dimension - 1):
                 continue
 
-            newState[index], newState[newIndex] = (
+            newState = deepcopy(state)  # state[:]
+            newState[pivot], newState[newIndex] = (
                 newState[newIndex],
-                newState[index],
+                newState[pivot],
             )
 
             movements = tuple(newState)
