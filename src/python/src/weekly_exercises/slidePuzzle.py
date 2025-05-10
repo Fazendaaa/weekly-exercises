@@ -41,6 +41,8 @@
 #   - https://rosettacode.org/wiki/15_puzzle_solver
 #
 
+from copy import deepcopy
+
 from .utils import flatten
 
 
@@ -54,30 +56,32 @@ def slidePuzzle(puzzle: list[list[int]]) -> str:
     Returns:
         str: A string representing the sequence of moves to solve the puzzle.
     """
-    dimension = len(puzzle)
-    new_puzzle = flatten(puzzle)
-    queue = [(new_puzzle, [])]
+    size = len(puzzle)
+    dimension = size**2
+    newPuzzle = flatten(puzzle)
+    queue: list[tuple[list[int], list[int]]] = [(newPuzzle, [])]
     visited = set()
-    moves = {"up": -dimension, "down": dimension, "left": -1, "right": 1}
+    moves = {"up": -size, "down": size, "left": -1, "right": 1}
 
     def checkResult(state: list[int], path: list[int]) -> str:
         """
         Validates the solution path.
 
         Args:
+            state (list[int]): the current state variation to solve the puzzle.
             path (list[int]): The sequence of moves to solve the puzzle.
 
         Returns:
             str: A string representing the sequence of moves to solve the puzzle.
         """
-        directions = {-dimension: "u", dimension: "d", -1: "l", 1: "r"}
-        ordered = [i for i in range(1, dimension**2)]
-        goalA = ordered + [0]
-        goalB = [0] + ordered
+        directions = {-size: "u", size: "d", -1: "l", 1: "r"}
+        ordered = [i for i in range(1, dimension)]
+        variationA = ordered + [0]
+        variationB = [0] + ordered
 
         return (
             ""
-            if goalA != state or goalB != state
+            if variationA != state or variationB != state
             else "".join([directions[moves[move]] for move in path])
         )
 
@@ -87,30 +91,30 @@ def slidePuzzle(puzzle: list[list[int]]) -> str:
 
         # Generate all possible moves from the current state
         for _, offset in moves.items():
-            new_state = state.copy()
-            index = new_state.index(0)
-            new_index = index + offset
+            newState = deepcopy(state)  # state[:]
+            index = newState.index(0)
+            newIndex = index + offset
 
-            if new_index < 0 or new_index > dimension:
+            if newIndex < 0 or newIndex > (dimension - 1):
                 continue
 
-            new_state[index], new_state[new_index] = (
-                new_state[new_index],
-                new_state[index],
+            newState[index], newState[newIndex] = (
+                newState[newIndex],
+                newState[index],
             )
 
-            movements = tuple(new_state)
+            movements = tuple(newState)
 
             if movements in visited:
                 continue
 
             new_path = path + [offset]
-            result = checkResult(new_state, new_path)
+            result = checkResult(newState, new_path)
 
             if result:
                 return result
 
-            queue.append((new_state, new_path))
+            queue.append((newState, new_path))
             visited.add(movements)
 
     return ""
