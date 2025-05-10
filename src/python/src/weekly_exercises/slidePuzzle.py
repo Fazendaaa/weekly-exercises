@@ -41,7 +41,7 @@
 #   - https://rosettacode.org/wiki/15_puzzle_solver
 #
 
-import itertools
+from .utils import flatten
 
 
 def slidePuzzle(puzzle: list[list[int]]) -> str:
@@ -55,7 +55,7 @@ def slidePuzzle(puzzle: list[list[int]]) -> str:
         str: A string representing the sequence of moves to solve the puzzle.
     """
     size = len(puzzle)
-    new_puzzle = list(itertools.chain(*puzzle))
+    new_puzzle = flatten(puzzle)
     goal = [i for i in range(1, size**2)] + [0]
 
     # Define the possible moves and their corresponding directions
