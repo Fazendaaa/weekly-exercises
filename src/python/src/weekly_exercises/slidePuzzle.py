@@ -56,13 +56,11 @@ def slidePuzzle(puzzle: list[list[int]]) -> str:
     """
     dimension = len(puzzle)
     new_puzzle = flatten(puzzle)
-    goal = [i for i in range(1, dimension**2)] + [0]
     queue = [(new_puzzle, [])]
     visited = set()
     moves = {"up": -dimension, "down": dimension, "left": -1, "right": 1}
-    directions = {-dimension: "u", dimension: "d", -1: "l", 1: "r"}
 
-    def checkResult(path: list[int]) -> str:
+    def checkResult(state: list[int], path: list[int]) -> str:
         """
         Validates the solution path.
 
@@ -72,22 +70,25 @@ def slidePuzzle(puzzle: list[list[int]]) -> str:
         Returns:
             str: A string representing the sequence of moves to solve the puzzle.
         """
+        directions = {-dimension: "u", dimension: "d", -1: "l", 1: "r"}
+        ordered = [i for i in range(1, dimension**2)]
+        goalA = ordered + [0]
+        goalB = [0] + ordered
+
         return (
-            "" if goal != path else "".join([directions[moves[move]] for move in path])
+            ""
+            if goalA != state or goalB != state
+            else "".join([directions[moves[move]] for move in path])
         )
 
     # Perform a breadth-first search to find the solution
     while queue:
         state, path = queue.pop()
-        result = checkResult(path)
-
-        if result:
-            return result
 
         # Generate all possible moves from the current state
         for _, offset in moves.items():
-            new_state = state[:]
-            index = state.index(0)
+            new_state = state.copy()
+            index = new_state.index(0)
             new_index = index + offset
 
             if new_index < 0 or new_index > dimension:
@@ -104,7 +105,7 @@ def slidePuzzle(puzzle: list[list[int]]) -> str:
                 continue
 
             new_path = path + [offset]
-            result = checkResult(new_path)
+            result = checkResult(new_state, new_path)
 
             if result:
                 return result
