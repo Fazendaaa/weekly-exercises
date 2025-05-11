@@ -1,7 +1,7 @@
 from weekly_exercises.slidePuzzle import slidePuzzle
 
 
-def test_generated_already_sorted():
+def test_generated_already_sorted() -> None:
     assert "Already sorted" == slidePuzzle(
         [
             [0, 1],
@@ -10,7 +10,7 @@ def test_generated_already_sorted():
     )
 
 
-def test_generated_left():
+def test_generated_left() -> None:
     assert "l" == slidePuzzle(
         [
             [1, 0],
@@ -19,7 +19,7 @@ def test_generated_left():
     )
 
 
-def test_generated_up():
+def test_generated_up() -> None:
     assert "u" == slidePuzzle(
         [
             [2, 1],
@@ -28,7 +28,7 @@ def test_generated_up():
     )
 
 
-def test_generated_right():
+def test_generated_right() -> None:
     assert "r" == slidePuzzle(
         [
             [1, 2],
@@ -37,7 +37,7 @@ def test_generated_right():
     )
 
 
-def test_generated_down():
+def test_generated_down() -> None:
     assert "d" == slidePuzzle(
         [
             [1, 0],
@@ -46,7 +46,7 @@ def test_generated_down():
     )
 
 
-def test_generated_simple():
+def test_generated_simple() -> None:
     assert "uull" == slidePuzzle(
         [
             [1, 2, 5],
@@ -56,7 +56,7 @@ def test_generated_simple():
     )
 
 
-def test_first_example():
+def test_first_example() -> None:
     assert "rrrulddluuuldrurdddrullulurrrddldluurddlulurruldrdrd" == slidePuzzle(
         [
             [15, 14, 1, 6],
@@ -67,7 +67,7 @@ def test_first_example():
     )
 
 
-# def test_second_example():
+# def test_second_example() -> None:
 #    assert "rrruldluuldrurdddluulurrrdlddruldluurddlulurruldrrdd" == slidePuzzle(
 #        [
 #            [0, 12, 9, 13],
