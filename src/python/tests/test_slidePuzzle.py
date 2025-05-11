@@ -46,6 +46,16 @@ def test_generated_down():
     )
 
 
+def test_generated_simple():
+    assert "uull" == slidePuzzle(
+        [
+            [1, 2, 5],
+            [3, 4, 8],
+            [6, 7, 0],
+        ]
+    )
+
+
 def test_first_example():
     assert "rrrulddluuuldrurdddrullulurrrddldluurddlulurruldrdrd" == slidePuzzle(
         [
