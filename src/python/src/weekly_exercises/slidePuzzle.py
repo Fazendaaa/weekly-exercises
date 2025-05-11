@@ -101,7 +101,7 @@ def slidePuzzle(puzzle: list[list[int]]) -> str:
             list[tuple[list[int], list[int]]]: A sorted list of variations based on the number of inversions.
         """
 
-        def count_inversions(arr: list[tuple[list[int], list[int]]]):
+        def count_inversions(arr: list[tuple[list[int], list[int]]]) -> int:
             inversions = 0
 
             for i in range(len(arr)):
