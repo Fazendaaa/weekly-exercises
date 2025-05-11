@@ -1,6 +1,51 @@
 from weekly_exercises.slidePuzzle import slidePuzzle
 
 
+def test_generated_already_sorted():
+    assert "Already sorted" == slidePuzzle(
+        [
+            [0, 1],
+            [2, 3],
+        ]
+    )
+
+
+def test_generated_left():
+    assert "l" == slidePuzzle(
+        [
+            [1, 0],
+            [2, 3],
+        ]
+    )
+
+
+def test_generated_up():
+    assert "u" == slidePuzzle(
+        [
+            [2, 1],
+            [0, 3],
+        ]
+    )
+
+
+def test_generated_right():
+    assert "r" == slidePuzzle(
+        [
+            [1, 2],
+            [0, 3],
+        ]
+    )
+
+
+def test_generated_down():
+    assert "d" == slidePuzzle(
+        [
+            [1, 0],
+            [3, 2],
+        ]
+    )
+
+
 def test_first_example():
     assert "rrrulddluuuldrurdddrullulurrrddldluurddlulurruldrdrd" == slidePuzzle(
         [

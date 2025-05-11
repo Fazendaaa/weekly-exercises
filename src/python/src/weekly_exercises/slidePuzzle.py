@@ -57,7 +57,7 @@ def slidePuzzle(puzzle: list[list[int]]) -> str:
         str: A string representing the sequence of moves to solve the puzzle.
     """
     size = len(puzzle)
-    dimension = (size**2) - 1
+    dimension = size**2
     newPuzzle = flatten(puzzle)
     queue: list[tuple[list[int], list[int]]] = [(newPuzzle, [])]
     visited = set()
@@ -79,22 +79,30 @@ def slidePuzzle(puzzle: list[list[int]]) -> str:
         variationA = ordered + [0]
         variationB = [0] + ordered
 
-        return (
-            ""
-            if variationA != state or variationB != state
-            else "".join([directions[moves[move]] for move in path])
-        )
+        if variationA == state or variationB == state:
+            return (
+                "".join([directions[move] for move in path])
+                if 0 != len(path)
+                else "Already sorted"
+            )
+
+        return ""
 
     # Perform a depth-first search to find the solution
     while queue:
         state, path = queue.pop(0)
+
+        result = checkResult(state, path)
+
+        if result:
+            return result
 
         # Generate all possible moves from the current state
         for _, offset in moves.items():
             pivot = state.index(0)
             newIndex = pivot + offset
 
-            if newIndex < 0 or newIndex > dimension:
+            if newIndex < 0 or newIndex > (dimension - 1):
                 continue
 
             newState = deepcopy(state)  # state[:]
@@ -117,4 +125,4 @@ def slidePuzzle(puzzle: list[list[int]]) -> str:
             queue.append((newState, new_path))
             visited.add(movements)
 
-    return ""
+    return "No Solution Found"
