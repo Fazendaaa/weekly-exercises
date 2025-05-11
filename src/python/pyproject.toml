@@ -27,6 +27,9 @@ addopts = ["--import-mode=importlib", "-ra", "-q", "-p", "profiling"]
 pythonpath = "./src"
 testpaths = ["tests"]
 
+[tool.coverage.run]
+omit = ["tests/*"]
+
 [tool.mypy]
 warn_return_any = true
 warn_unused_configs = true
