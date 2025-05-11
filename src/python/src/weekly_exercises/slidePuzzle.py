@@ -88,8 +88,34 @@ def slidePuzzle(puzzle: list[list[int]]) -> str:
 
         return ""
 
+    def checkHeuristic(
+        variations: list[tuple[list[int], list[int]]],
+    ) -> list[tuple[list[int], list[int]]]:
+        """
+        Sorts the variations based on the number of inversions.
+
+        Args:
+            variations (list[tuple[list[int], list[int]]]): A list of variations to be sorted.
+
+        Returns:
+            list[tuple[list[int], list[int]]]: A sorted list of variations based on the number of inversions.
+        """
+
+        def count_inversions(arr: list[tuple[list[int], list[int]]]):
+            inversions = 0
+
+            for i in range(len(arr)):
+                for j in range(i + 1, len(arr)):
+                    if arr[0][i] > arr[0][j]:
+                        inversions += 1
+
+            return inversions
+
+        return sorted(variations, key=count_inversions)
+
     # Perform a depth-first search to find the solution
     while queue:
+        variations: list[tuple[list[int], list[int]]] = []
         state, path = queue.pop(0)
 
         result = checkResult(state, path)
@@ -122,7 +148,9 @@ def slidePuzzle(puzzle: list[list[int]]) -> str:
             if result:
                 return result
 
-            queue.append((newState, new_path))
             visited.add(movements)
+            variations.append((newState, new_path))
+
+        queue.extend(checkHeuristic(variations))
 
     return "No Solution Found"
