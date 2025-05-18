@@ -46,7 +46,19 @@ from copy import deepcopy
 from .utils import flatten
 
 
-def slidePuzzle(puzzle: list[list[int]]) -> str:
+def create_vertical_2d(rows: int, cols: int, diff: int) -> list[list[int]]:
+    """
+    Create a vertically ordered 2D list
+
+    Args:
+
+    Returns:
+
+    """
+    return [[i + rows * j + diff for j in range(cols)] for i in range(rows)]
+
+
+def slidePuzzleNonOptimal(puzzle: list[list[int]], alternativeOrdering: bool) -> str:
     """
     Solves the slide puzzle game and returns the solution in the fewest moves possible.
 
@@ -60,7 +72,7 @@ def slidePuzzle(puzzle: list[list[int]]) -> str:
     dimension = size**2
     newPuzzle = flatten(puzzle)
     queue: list[tuple[list[int], list[int]]] = [(newPuzzle, [])]
-    visited = set()
+    visited: set[tuple[list[int]]] = set()
     moves = {"up": -size, "down": size, "left": -1, "right": 1}
 
     def checkResult(state: list[int], path: list[int]) -> str:
@@ -76,15 +88,32 @@ def slidePuzzle(puzzle: list[list[int]]) -> str:
         """
         directions = {-size: "u", size: "d", -1: "l", 1: "r"}
         ordered = [i for i in range(1, dimension)]
-        variationA = ordered + [0]
-        variationB = [0] + ordered
+        horizontalA = ordered + [0]
+        horizontalB = [0] + ordered
+        verticalA = flatten(create_vertical_2d(size, size, 0))
+        vertical = create_vertical_2d(size, size, 1)
+        vertical[-1][-1] = 0
+        verticalB = flatten(vertical)
 
-        if variationA == state or variationB == state:
-            return (
-                "".join([directions[move] for move in path])
-                if 0 != len(path)
-                else "Already sorted"
-            )
+        def check():
+            if 0 == len(path):
+                return "Already sorted"
+
+            return "".join([directions[move] for move in path])
+
+        if horizontalA == state:
+            return check()
+        if alternativeOrdering:
+            if horizontalB == state or verticalA == state or verticalB == state:
+                return check()
+
+            horizontalA.reverse()
+            horizontalB.reverse()
+            verticalA.reverse()
+            verticalB.reverse()
+
+            if horizontalB == state or verticalA == state or verticalB == state:
+                return check()
 
         return ""
 
@@ -154,3 +183,16 @@ def slidePuzzle(puzzle: list[list[int]]) -> str:
         queue.extend(checkHeuristic(variations))
 
     return "No Solution Found"
+
+
+def slidePuzzleOptimal(puzzle: list[list[int]]) -> str:
+    """
+    Solves the slide puzzle game and returns the solution in the fewest moves possible.
+
+    Args:
+        puzzle (list[list[int]]): A 2D list representing the initial state of the puzzle.
+
+    Returns:
+        str: A string representing the sequence of moves to solve the puzzle.
+    """
+    pass

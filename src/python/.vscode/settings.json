@@ -33,6 +33,7 @@
     "sonarqube",
     "sonarsource",
     "testpaths",
-    "truststore"
+    "truststore",
+    "uull"
   ]
 }

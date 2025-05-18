@@ -1,63 +1,90 @@
-from weekly_exercises.slidePuzzle import slidePuzzle
+from weekly_exercises.slidePuzzle import slidePuzzleNonOptimal, slidePuzzleOptimal
 
 
 def test_generated_already_sorted() -> None:
-    assert "Already sorted" == slidePuzzle(
+    assert "Already sorted" == slidePuzzleNonOptimal(
         [
             [0, 1],
             [2, 3],
-        ]
+        ],
+        False,
     )
 
 
-def test_generated_left() -> None:
-    assert "l" == slidePuzzle(
+def test_generated_already_sorted_alternative() -> None:
+    assert "Already sorted" == slidePuzzleNonOptimal(
+        [
+            [0, 1],
+            [2, 3],
+        ],
+        True,
+    )
+
+
+def test_generated_right_right() -> None:
+    assert "rr" == slidePuzzleNonOptimal(
         [
             [1, 0],
             [2, 3],
-        ]
+        ],
+        False,
     )
 
 
-def test_generated_up() -> None:
-    assert "u" == slidePuzzle(
+def test_generated_up_alternative() -> None:
+    assert "u" == slidePuzzleNonOptimal(
         [
             [2, 1],
             [0, 3],
-        ]
+        ],
+        True,
     )
 
 
 def test_generated_right() -> None:
-    assert "r" == slidePuzzle(
+    assert "r" == slidePuzzleNonOptimal(
         [
             [1, 2],
             [0, 3],
-        ]
+        ],
+        False,
     )
 
 
 def test_generated_down() -> None:
-    assert "d" == slidePuzzle(
+    assert "d" == slidePuzzleNonOptimal(
         [
             [1, 0],
             [3, 2],
-        ]
+        ],
+        False,
     )
 
 
 def test_generated_simple() -> None:
-    assert "uull" == slidePuzzle(
+    assert "uurrrrrr" == slidePuzzleNonOptimal(
         [
             [1, 2, 5],
             [3, 4, 8],
             [6, 7, 0],
-        ]
+        ],
+        False,
+    )
+
+
+def test_generated_simple_alternative() -> None:
+    assert "uull" == slidePuzzleNonOptimal(
+        [
+            [1, 2, 5],
+            [3, 4, 8],
+            [6, 7, 0],
+        ],
+        True,
     )
 
 
 def test_first_example() -> None:
-    assert "rrrulddluuuldrurdddrullulurrrddldluurddlulurruldrdrd" == slidePuzzle(
+    assert "rrrulddluuuldrurdddrullulurrrddldluurddlulurruldrdrd" == slidePuzzleOptimal(
         [
             [15, 14, 1, 6],
             [9, 11, 4, 12],
