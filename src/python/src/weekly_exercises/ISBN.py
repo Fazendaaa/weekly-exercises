@@ -48,9 +48,11 @@ def isISBN(isbn: str):
 
     if len(isbn) != 10:
         return False
-    if isbn[-1] == "X":
+    if isbn[-1].isalpha():
+        if isbn[-1] != "X":
+            return False
         isbn = isbn[:-1] + "10"
-    if not isbn[:-1].isdigit() or not isbn[-1].isdigit():
+    if not isbn[:].isdigit():
         return False
 
     return sum([(10 - i) * int(isbn[i]) for i in range(10)]) % 11 == 0
