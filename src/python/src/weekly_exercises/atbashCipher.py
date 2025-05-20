@@ -56,10 +56,10 @@ def encode(text: str, block: int) -> str:
 def decode(text: str) -> str:
     result: list[str] = []
 
-    for char in text:
+    for char in text.replace(" ", ""):
         if char.isalpha():
             result.append(chr(219 - ord(char)))
         else:
             result.append(char)
 
-    return "".join(result).replace(" ", "")
+    return "".join(result)
