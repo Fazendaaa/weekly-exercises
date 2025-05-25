@@ -69,6 +69,7 @@ def minesweeperRow(result: list[list[str]], nRows: int, outerIndex: int) -> None
     Returns:
         None: replaces in-place the needed information at result
     """
+
     nCols = len(result[0])
     directions = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
 
@@ -99,6 +100,12 @@ def minesweeper(board: list[list[str]]) -> list[list[str]]:
     Raises:
         ValueError: If the board is invalid with current input.
     """
+
+    if not board or not all(
+        [all([cell in ["·", "*"] for cell in row]) for row in board]
+    ):
+        raise ValueError("The board is invalid with current input.")
+
     result = deepcopy(board)
     nRows = len(result)
 
