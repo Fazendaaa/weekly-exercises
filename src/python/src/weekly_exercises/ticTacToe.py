@@ -59,9 +59,7 @@ def checkRow(row: list[str]) -> bool:
         bool: Whether or not there is at least one filled line.
     """
 
-    pivot = row[0]
-
-    return all(["." != cell and pivot == cell for cell in row[1:]])
+    return all(["." != cell and row[0] == cell for cell in row[1:]])
 
 
 def isRowWinner(board: list[list[str]]) -> bool:
