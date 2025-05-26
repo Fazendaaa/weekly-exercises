@@ -59,16 +59,9 @@ def checkRow(row: list[str]) -> bool:
         bool: Whether or not there is at least one filled line.
     """
 
-    winner = True
     pivot = row[0]
 
-    for cell in row[1:]:
-        if "." != cell and pivot != cell:
-            winner = False
-
-            break
-
-    return winner
+    return all(["." != cell and pivot == cell for cell in row[1:]])
 
 
 def isRowWinner(board: list[list[str]]) -> bool:
@@ -88,9 +81,8 @@ def isRowWinner(board: list[list[str]]) -> bool:
 
     with ThreadPoolExecutor() as executor:
         futures = [executor.submit(checkRow, row) for row in board]
+        result = [future.result() for future in as_completed(futures)]
 
-        for future in as_completed(futures):
-            if future.result():
-                return True
+        return result.count(True) == 1
 
     return False

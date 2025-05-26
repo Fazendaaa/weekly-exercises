@@ -29,3 +29,13 @@ def test_third_example() -> None:
     ]
 
     assert not isRowWinner(board)
+
+
+def test_fourth_example() -> None:
+    board = [
+        ["X", "X", "X"],
+        ["X", "X", "X"],
+        [".", ".", "X"],
+    ]
+
+    assert not isRowWinner(board)
