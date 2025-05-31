@@ -56,20 +56,26 @@ def earnings(values: list[int], k: int) -> int:
     except AssertionError:
         raise ValueError("Invalid input")
 
-    possibilities: list[int] = []
-    result: list[int] = []
+    length = len(values)
 
-    for option in zip(*[values[i:] for i in range(k)]):
-        possibilities.append(sum(option))
+    if 0 == length:
+        return 0
 
-        if len(possibilities) == k + 1:
-            result.append(max(possibilities))
-            possibilities = []
+    result = [0] * (length + 1)
 
-    if 0 != len(possibilities):
-        result.append(max(possibilities))
+    for outerIndex in range(1, length + 1):
+        maxValue = result[outerIndex - 1]
 
-    return sum(result)
+        for innerIndex in range(1, min(k, outerIndex) + 1):
+            start = outerIndex - innerIndex
+            total = sum(values[start:outerIndex])
 
+            if outerIndex - innerIndex - 1 >= 0:
+                total += result[outerIndex - innerIndex - 1]
 
-earnings([45, 12, 78, 34, 56, 89, 23, 67, 91], 4)
+            if total > maxValue:
+                maxValue = total
+
+        result[outerIndex] = maxValue
+
+    return result[length]
