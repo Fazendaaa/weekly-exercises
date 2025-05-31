@@ -43,7 +43,7 @@
 #
 
 
-def isISBN(isbn: str):
+def isISBN(isbn: str) -> bool:
     isbn = isbn.replace("-", "")
 
     if len(isbn) != 10:
