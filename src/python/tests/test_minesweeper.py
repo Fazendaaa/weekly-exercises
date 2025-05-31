@@ -1,4 +1,4 @@
-import pytest
+from pytest import raises
 from weekly_exercises.minesweeper import minesweeper
 
 
@@ -10,7 +10,7 @@ def test_non_valid_input() -> None:
         ["·", "·", "·", "·", "X"],
     ]
 
-    with pytest.raises(ValueError, match="The board is invalid with current input."):
+    with raises(ValueError, match="The board is invalid with current input."):
         minesweeper(board)
 
 

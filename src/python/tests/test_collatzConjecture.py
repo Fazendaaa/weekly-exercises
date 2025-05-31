@@ -1,9 +1,9 @@
-import pytest
+from pytest import raises
 from weekly_exercises.collatzConjecture import collatzConjecture
 
 
 def test_non_valid_input() -> None:
-    with pytest.raises(ValueError, match="Only positive integers are allowed"):
+    with raises(ValueError, match="Only positive integers are allowed"):
         collatzConjecture(-1)
 
 
