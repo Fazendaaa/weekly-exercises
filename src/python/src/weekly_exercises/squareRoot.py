@@ -72,9 +72,6 @@ def squareRoot(number: int) -> int:
             f"Invalid input of class: { type(number).__name__ } or number value: { number }"
         )
 
-    if 0 == number:
-        return 0
-
     basis = number
     guess = (basis + 1) // 2
 
