@@ -69,14 +69,14 @@ def squareRoot(number: int) -> int:
     except AssertionError:
         raise ValueError(f"Invalid input of class: { type(number).__name__ }")
 
-    if number == 0:
+    if 0 == number:
         return 0
 
-    x = number
-    y = (x + 1) // 2
+    basis = number
+    new = (basis + 1) // 2
 
-    while y < x:
-        x = y
-        y = (x + number // x) // 2
+    while new < basis:
+        basis = new
+        new = (basis + number // basis) // 2
 
-    return x
+    return basis
