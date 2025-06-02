@@ -66,8 +66,11 @@ def squareRoot(number: int) -> int:
 
     try:
         assert isinstance(number, int)
+        assert number > 0
     except AssertionError:
-        raise ValueError(f"Invalid input of class: { type(number).__name__ }")
+        raise ValueError(
+            f"Invalid input of class: { type(number).__name__ } or number value: { number }"
+        )
 
     if 0 == number:
         return 0
