@@ -73,10 +73,10 @@ def squareRoot(number: int) -> int:
         return 0
 
     basis = number
-    new = (basis + 1) // 2
+    guess = (basis + 1) // 2
 
-    while new < basis:
-        basis = new
-        new = (basis + number // basis) // 2
+    while guess < basis:
+        basis = guess
+        guess = (basis + number // basis) // 2
 
     return basis
