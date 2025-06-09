@@ -110,8 +110,15 @@ def killerSudokuHelper(
     cage_sum: int, cage_size: int, constraints: set[int] = None
 ) -> list[tuple[int]]:
     """
-    This function takes in a cage, its sum, and the size of the Sudoku grid.
-    It returns a list of all valid combinations for the cage, given the sum and size constraints.
+
+
+    Args:
+        cage_sum (int): _description_
+        cage_size (int): _description_
+        constraints (set[int], optional): _description_. Defaults to None.
+
+    Returns:
+        list[tuple[int]]: _description_
     """
 
     if constraints is None:
