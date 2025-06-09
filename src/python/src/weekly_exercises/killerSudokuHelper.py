@@ -10,7 +10,8 @@
 #
 #   Killer Sudoku Rules
 #
-#   - Standard Sudoku rules apply.
+#   - Standard Sudoku rules apply --
+#     https://masteringsudoku.com/sudoku-rules-beginners/.
 #   - The digits in a cage, usually marked by a dotted line, add up to the small
 #     number given in the corner of the cage.
 #   - A digit may only occur once in a cage.
@@ -74,17 +75,17 @@
 # standard Sudoku rules.
 #
 #     +-------+-------+-------+
+#     | . . . | . 4 . | . . . |
 #     | . . . | . . . | . . . |
-#     | . . . | . . . | . . . |
-#     | . . . | . . . | . . . |
+#     | . . . | . 1 . | . . . |
 #     +-------+-------+-------+
-#     | . . . | . . . | . . . |
-#     | . . . | . . . | . . . |
-#     | . . . | . . . | . . . |
+#     | . . . | . 2 . | . . . |
+#     | . . . | . 8 . | . . . |
+#     | . . . | . 3 . | . . . |
 #     +-------+-------+-------+
-#     | . . . | . . . | . . . |
-#     | . . . | . . . | . . . |
-#     | . . . | . . . | . . . |
+#     | . . . | . 7 . | . . . |
+#     | . . . | . 1 . | . . . |
+#     | . . . | . 9 . | . . . |
 #     +-------+-------+-------+
 #
 #   Trying it yourself
@@ -98,5 +99,39 @@
 # as well as Sudoku apps, books and websites.
 #
 # Reference:
+#   - https://exercism.org/tracks/r/exercises/killer-sudoku-helper
 #   - https://github.com/exercism/julia/pull/413
 #
+
+from itertools import combinations
+
+
+def killerSudokuHelper(
+    cage_sum: int, cage_size: int, constraints: set[int] = None
+) -> list[tuple[int]]:
+    """
+    This function takes in a cage, its sum, and the size of the Sudoku grid.
+    It returns a list of all valid combinations for the cage, given the sum and size constraints.
+    """
+
+    if constraints is None:
+        constraints = set()
+
+    digits = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    valid_combinations: list[tuple[int]] = []
+
+    for combo in combinations(digits, cage_size):
+        if sum(combo) != cage_sum:
+            continue
+
+        if len(set(combo)) != cage_size:
+            continue
+
+        if constraints and any(d in constraints for d in combo):
+            continue
+
+        valid_combinations.append(combo)
+
+    valid_combinations.sort()
+
+    return valid_combinations
