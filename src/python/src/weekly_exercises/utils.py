@@ -15,7 +15,7 @@ def flatten[T](value: list[list[T]]) -> list[T]:
     return list(chain(*value))
 
 
-def allDivisors(n: int) -> list[int]:
+def allDivisors(n: int, sort: bool = False) -> list[int]:
     """
     Returns a list of all divisors of a given number, including 1 and the number itself.
 
@@ -29,12 +29,9 @@ def allDivisors(n: int) -> list[int]:
        d. Return the list of divisors.
 
     Example:
-        >>> all_divisors_ = allDivisors(12)
+        >>> all_divisors_ = allDivisors(12, True)
         >>> all_divisors_
         [1, 2, 3, 4, 6, 12]
-
-        >>> all_divisors_summary_ = allDivisors(-12)
-        >>> all_divisors
     Args:
         n (int): _description_
 
@@ -55,6 +52,7 @@ def allDivisors(n: int) -> list[int]:
                 if int(n / i) != i:
                     divisors.append(int(n / i))
 
-    divisors.sort()
+    if sort:
+        divisors.sort()
 
     return divisors

@@ -125,7 +125,7 @@ def killerSudokuHelper(
         constraints = set()
 
     digits = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    valid_combinations: list[tuple[int]] = []
+    validCombinations: list[tuple[int]] = []
 
     for combo in combinations(digits, cage_size):
         if sum(combo) != cage_sum:
@@ -137,8 +137,8 @@ def killerSudokuHelper(
         if constraints and any(d in constraints for d in combo):
             continue
 
-        valid_combinations.append(combo)
+        validCombinations.append(combo)
 
-    valid_combinations.sort()
+    validCombinations.sort()
 
-    return valid_combinations
+    return validCombinations

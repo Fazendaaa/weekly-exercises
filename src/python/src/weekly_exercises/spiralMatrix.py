@@ -69,8 +69,8 @@ def spiralMatrix(value: int) -> list[list[int]]:
     direction = 0
     directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
-    for i in range(1, value**2 + 1):
-        matrix[row][col] = i
+    for index in range(1, value**2 + 1):
+        matrix[row][col] = index
         next_row, next_col = (
             row + directions[direction][0],
             col + directions[direction][1],

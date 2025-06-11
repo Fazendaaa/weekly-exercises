@@ -81,12 +81,9 @@ def perfectNumbers(value: int) -> str:
     if value < 1:
         raise ValueError("Classification is only possible for positive integers.")
 
-    aliquot_sum = sum(allDivisors(value)[:-1])
+    aliquot_sum = sum(allDivisors(value, True)[:-1])
 
     if aliquot_sum == value:
         return "perfect"
 
-    if aliquot_sum > value:
-        return "abundant"
-
-    return "deficient"
+    return "abundant" if aliquot_sum > value else "deficient"

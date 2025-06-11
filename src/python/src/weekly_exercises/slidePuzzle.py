@@ -95,7 +95,7 @@ def slidePuzzleNonOptimal(puzzle: list[list[int]], alternativeOrdering: bool) ->
         vertical[-1][-1] = 0
         verticalB = flatten(vertical)
 
-        def check():
+        def check() -> str:
             if 0 == len(path):
                 return "Already sorted"
 

@@ -79,10 +79,7 @@ def collatzConjecture(start: int) -> int:
     current = start
 
     while 1 != current:
-        if 0 == current % 2:
-            current = current / 2
-        else:
-            current = current * 3 + 1
+        current = current / 2 if 0 == current % 2 else current * 3 + 1
         steps += 1
 
     return steps
