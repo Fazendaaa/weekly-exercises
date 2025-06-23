@@ -29,6 +29,9 @@
     "notebook.source.fixAll": "explicit",
     "notebook.source.organizeImports": "explicit"
   },
+  "mbake.formatOnSave": true,
+  "mbake.verbose": true,
+  "mbake.showDiff": true,
   "cSpell.words": [
     "addopts",
     "adduser",

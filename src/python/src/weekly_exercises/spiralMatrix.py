@@ -36,7 +36,8 @@
 #
 # Reference:
 #   - https://exercism.org/tracks/python/exercises/spiral-matrix
-#   - https://web.archive.org/web/20230607064729/https://old.reddit.com/r/dailyprogrammer/comments/6i60lr/20170619_challenge_320_easy_spiral_ascension/
+#   - https://web.archive.org/web/20230607064729
+#   - https://old.reddit.com/r/dailyprogrammer/comments/6i60lr/20170619_challenge_320_easy_spiral_ascension/
 #
 
 
@@ -69,8 +70,7 @@ def spiralMatrix(value: int) -> list[list[int]]:
     direction = 0
     directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
-    for index in range(1, value**2 + 1):
-        matrix[row][col] = index
+    for matrix[row][col] in range(1, value**2 + 1):
         next_row, next_col = (
             row + directions[direction][0],
             col + directions[direction][1],
