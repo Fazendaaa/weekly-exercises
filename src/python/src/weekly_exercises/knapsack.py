@@ -43,6 +43,15 @@ from typing import TypedDict
 Sack = TypedDict("Sack", {"weight": int, "value": int})
 
 
-def Knapsack(max: int, itens: list[Sack]) -> int:
+def Knapsack(desired: int, items: list[Sack]) -> int:
+    dynamicProgramming = [0] * (desired + 1)
 
-    return 0
+    for outer in range(1, len(items) + 1):
+        for inner in range(desired, items[outer - 1]["weight"] - 1, -1):
+            dynamicProgramming[inner] = max(
+                dynamicProgramming[inner],
+                dynamicProgramming[inner - items[outer - 1]["weight"]]
+                + items[outer - 1]["value"],
+            )
+
+    return dynamicProgramming[desired]
