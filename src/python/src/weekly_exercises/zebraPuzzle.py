@@ -58,126 +58,313 @@
 #   - https://en.wikipedia.org/wiki/Zebra_Puzzle
 #
 
-
-from typing import Any
+from typing import Any, Optional
 
 
 class Zebra:
-    """A class to solve the Zebra Puzzle logic problem.
-
-    The Zebra Puzzle involves 5 houses with different colors, inhabitants of different
-    nationalities, pets, beverages and hobbies. The puzzle provides 15 clues that must be
-    used together to determine who drinks water and who owns the zebra.
-
-    Attributes:
-        __houses__ (range): Range of house numbers from 1-5
-        __colors__ (set): Set of house colors
-        __nationalities__ (set): Set of inhabitant nationalities
-        __animals__ (set): Set of pets owned by inhabitants
-        __drinks__ (set): Set of beverages consumed by inhabitants
-        __cigars__ (set): Set of cigar brands smoked by inhabitants
-        __pets__ (set): Set of pets owned by inhabitants
-
-    Properties:
-        houses: Get/set the house numbers
-        colors: Get/set the house colors
-        nationalities: Get/set the inhabitant nationalities
-        animals: Get/set the pets
-        drinks: Get/set the beverages
-        cigars: Get/set the cigar brands
-    """
+    """A class to solve the Zebra Puzzle logic problem with self-generated deductions."""
 
     def __init__(
         self,
-        houses: int | None = None,
-        colors: set[str] | None = None,
-        nationalities: set[str] | None = None,
-        animals: set[str] | None = None,
-        drinks: set[str] | None = None,
-        cigars: set[str] | None = None,
-        pets: set[str] | None = None,
+        houses: Optional[int] = None,
+        colors: Optional[set[str]] = None,
+        nationalities: Optional[set[str]] = None,
+        pets: Optional[set[str]] = None,
+        drinks: Optional[set[str]] = None,
+        hobbies: Optional[set[str]] = None,
     ) -> None:
-        self.__houses__: dict[int, Any] = {}
-        self.__colors__: set[str] = set()
-        self.__nationalities__: set[str] = set()
-        self.__animals__: set[str] = set()
-        self.__drinks__: set[str] = set()
-        self.__cigars__: set[str] = set()
-        self.__pets__: set[str] = set()
+        self.__houses__: dict[int, dict[str, Any]] = {}
+        self.__colors__: set[str] = colors or set()
+        self.__nationalities__: set[str] = nationalities or set()
+        self.__pets__: set[str] = pets or set()
+        self.__drinks__: set[str] = drinks or set()
+        self.__hobbies__: set[str] = hobbies or set()
+        self.__constraints__: list[dict] = []
+        self.__attributes__ = ["color", "nationality", "pet", "drink", "hobby"]
+        self.__position_attribute__ = "position"
+
+        if houses is not None:
+            self.houses = houses
+
+    def relate(
+        self, attribute1: str, value1: Any, relation: str, attribute2: str, value2: Any
+    ) -> None:
+        """Establishes a relationship between two attributes."""
+        self.__constraints__.append(
+            {
+                "attribute1": attribute1,
+                "value1": value1,
+                "relation": relation,
+                "attribute2": attribute2,
+                "value2": value2,
+            }
+        )
 
     def solve(self) -> None:
-        """_summary_
+        """Solves the puzzle using constraint satisfaction."""
+        self._initialize_attributes()
+        self._generate_all_possibilities()
+        self._apply_constraints()
+        self._eliminate_impossibilities()
+        self._deduce_remaining_attributes()
 
-        Raises:
-            NotImplementedError: _description_
-        """
-        raise NotImplementedError("This method is not implemented yet.")
+    def _initialize_attributes(self) -> None:
+        for house_num in self.houses:
+            self.houses[house_num] = {
+                "color": set(self.colors),
+                "nationality": set(self.nationalities),
+                "pet": set(self.pets),
+                "drink": set(self.drinks),
+                "hobby": set(self.hobbies),
+                self.__position_attribute__: {house_num},
+            }
 
-    def result(self) -> None:
-        """_summary_
+    def _generate_all_possibilities(self) -> None:
+        """Generate all possible combinations of attributes."""
+        pass
 
-        Raises:
-            NotImplementedError: _description_
-        """
-        raise NotImplementedError("This method is not implemented yet.")
+    def _apply_constraints(self) -> None:
+        """Apply all registered constraints to narrow possibilities."""
+        for constraint in self.__constraints__:
+            self._apply_constraint(constraint)
+
+    def _apply_constraint(self, constraint: dict) -> None:
+        """Apply a single constraint to the houses."""
+        attr1 = constraint["attribute1"]
+        val1 = constraint["value1"]
+        relation = constraint["relation"]
+        attr2 = constraint["attribute2"]
+        val2 = constraint["value2"]
+
+        if relation == "is":
+            self._apply_is_relation(attr1, val1, attr2, val2)
+        elif relation == "same_house":
+            self._apply_same_house_relation(attr1, val1, attr2, val2)
+        elif relation == "next_to":
+            self._apply_next_to_relation(attr1, val1, attr2, val2)
+        elif relation == "right_of":
+            self._apply_right_of_relation(attr1, val1, attr2, val2)
+
+    def _apply_is_relation(self, attr1: str, val1: Any, attr2: str, val2: Any) -> None:
+        """Apply an 'is' relationship."""
+        if attr1 == self.__position_attribute__:
+            # Handle position constraints (e.g., "Norwegian is in position 1")
+            for house_num, house in self.houses.items():
+                if house_num == val1:
+                    house[attr2] = {val2}
+                elif val2 in house.get(attr2, set()):
+                    house[attr2].remove(val2)
+        else:
+            # Handle other "is" constraints
+            for house in self.houses.values():
+                if val1 in house.get(attr1, set()):
+                    if attr2 in house:
+                        house[attr2] = {val2}
+                    else:
+                        house[attr2] = {val2}
+
+    def _apply_same_house_relation(
+        self, attr1: str, val1: Any, attr2: str, val2: Any
+    ) -> None:
+        """Apply same house relationship."""
+        for house in self.houses.values():
+            if val1 in house.get(attr1, set()):
+                if attr2 in house:
+                    if val2 not in house[attr2]:
+                        house[attr2] = {val2}
+                else:
+                    house[attr2] = {val2}
+            if val2 in house.get(attr2, set()):
+                if attr1 in house:
+                    if val1 not in house[attr1]:
+                        house[attr1] = {val1}
+                else:
+                    house[attr1] = {val1}
+
+    def _apply_next_to_relation(
+        self, attr1: str, val1: Any, attr2: str, val2: Any
+    ) -> None:
+        """Apply next_to relationship."""
+        for house_num, house in self.houses.items():
+            if val1 in house.get(attr1, set()):
+                # Find adjacent houses
+                adjacent = []
+                if house_num > 1:
+                    adjacent.append(house_num - 1)
+                if house_num < len(self.houses):
+                    adjacent.append(house_num + 1)
+
+                # Apply to adjacent houses
+                for adj in adjacent:
+                    if attr2 in self.houses[adj]:
+                        if val2 in self.houses[adj][attr2]:
+                            continue
+                        else:
+                            self.houses[adj][attr2] = {val2}
+                    else:
+                        self.houses[adj][attr2] = {val2}
+
+    def _apply_right_of_relation(
+        self, attr1: str, val1: Any, attr2: str, val2: Any
+    ) -> None:
+        """Apply right_of relationship (val1 is immediately right of val2)."""
+        for i in range(1, len(self.houses)):
+            # Check if house i+1 could have val1 and house i could have val2
+            if val1 in self.houses[i + 1].get(attr1, set()):
+                if attr2 in self.houses[i]:
+                    if val2 not in self.houses[i][attr2]:
+                        self.houses[i][attr2] = {val2}
+                else:
+                    self.houses[i][attr2] = {val2}
+
+            if val2 in self.houses[i].get(attr2, set()):
+                if attr1 in self.houses[i + 1]:
+                    if val1 not in self.houses[i + 1][attr1]:
+                        self.houses[i + 1][attr1] = {val1}
+                else:
+                    self.houses[i + 1][attr1] = {val1}
+
+    def _eliminate_impossibilities(self) -> None:
+        """Eliminate impossible values based on constraints."""
+        changed = True
+        while changed:
+            changed = False
+            changed |= self._propagate_constraints()
+            changed |= self._eliminate_unique_values()
+
+    def _propagate_constraints(self) -> bool:
+        """Propagate constraints through the houses."""
+        changed = False
+        for house in self.houses.values():
+            for attr in self.__attributes__:
+                if attr in house and len(house[attr]) == 1:
+                    # This attribute is determined, remove from other houses
+                    value = next(iter(house[attr]))
+                    for other_house in self.houses.values():
+                        if (
+                            other_house != house
+                            and attr in other_house
+                            and value in other_house[attr]
+                        ):
+                            other_house[attr].remove(value)
+                            changed = True
+        return changed
+
+    def _eliminate_unique_values(self) -> bool:
+        """If a value only appears once in an attribute across all houses, set it."""
+        changed = False
+        for attr in self.__attributes__:
+            value_counts = {}
+            for house in self.houses.values():
+                if attr in house:
+                    for value in house[attr]:
+                        value_counts[value] = value_counts.get(value, 0) + 1
+
+            for value, count in value_counts.items():
+                if count == 1:
+                    for house in self.houses.values():
+                        if (
+                            attr in house
+                            and value in house[attr]
+                            and len(house[attr]) > 1
+                        ):
+                            house[attr] = {value}
+                            changed = True
+        return changed
+
+    def _deduce_remaining_attributes(self) -> None:
+        """Deduce remaining attributes through logical elimination."""
+        # Continue until all houses have all attributes determined
+        while not all(
+            all(len(v) == 1 for v in house.values()) for house in self.houses.values()
+        ):
+            self._propagate_constraints()
+            self._eliminate_unique_values()
+
+            # Additional deduction: if an attribute has only one possible house left
+            for attr in self.__attributes__:
+                possible_houses = []
+                for house_num, house in self.houses.items():
+                    if attr in house and len(house[attr]) > 1:
+                        possible_houses.append(house_num)
+
+                if len(possible_houses) == 1:
+                    house_num = possible_houses[0]
+                    for value in self.houses[house_num][attr]:
+                        # Check if this value is possible in other houses
+                        possible = True
+                        for other_house_num, other_house in self.houses.items():
+                            if (
+                                other_house_num != house_num
+                                and attr in other_house
+                                and value in other_house[attr]
+                            ):
+                                possible = False
+                                break
+                        if possible:
+                            self.houses[house_num][attr] = {value}
+                            break
 
     @property
-    def houses(self) -> dict[int, Any]:
-        """_summary_
-
-        Returns:
-            set[str]: _description_
-        """
+    def houses(self) -> dict[int, dict[str, Any]]:
+        """Get the dictionary of houses and their attributes."""
         return self.__houses__
 
-    @property.setter
-    def houses(self, houses: int) -> None:
-        self.__houses__ = {i: None for i in range(1, houses + 1)}
+    @houses.setter
+    def houses(self, num_houses: int) -> None:
+        """Initialize the houses with the given number.
+
+        Args:
+            num_houses: Number of houses to initialize (should be 5 for the puzzle)
+        """
+        self.__houses__ = {i: {} for i in range(1, num_houses + 1)}
 
     @property
     def colors(self) -> set[str]:
+        """Get the set of possible house colors."""
         return self.__colors__
 
-    @property.setter
+    @colors.setter
     def colors(self, colors: set[str]) -> None:
+        """set the possible house colors."""
         self.__colors__ = colors
 
     @property
     def nationalities(self) -> set[str]:
+        """Get the set of possible nationalities."""
         return self.__nationalities__
 
-    @property.setter
+    @nationalities.setter
     def nationalities(self, nationalities: set[str]) -> None:
+        """set the possible nationalities."""
         self.__nationalities__ = nationalities
 
     @property
-    def animals(self) -> set[str]:
-        return self.__animals__
+    def pets(self) -> set[str]:
+        """Get the set of possible pets."""
+        return self.__pets__
 
-    @property.setter
-    def animals(self, animals: set[str]) -> None:
-        self.__animals__ = animals
+    @pets.setter
+    def pets(self, pets: set[str]) -> None:
+        """set the possible pets."""
+        self.__pets__ = pets
 
     @property
     def drinks(self) -> set[str]:
+        """Get the set of possible drinks."""
         return self.__drinks__
 
-    @property.setter
+    @drinks.setter
     def drinks(self, drinks: set[str]) -> None:
+        """set the possible drinks."""
         self.__drinks__ = drinks
 
     @property
-    def cigars(self) -> set[str]:
-        return self.__cigars__
+    def hobbies(self) -> set[str]:
+        """Get the set of possible hobbies."""
+        return self.__hobbies__
 
-    @property.setter
-    def cigars(self, cigars: set[str]) -> None:
-        self.__cigars__ = cigars
-
-    @property
-    def pets(self) -> set[str]:
-        return self.__pets__
-
-    @property.setter
-    def pets(self, pets: set[str]) -> None:
-        self.__pets__ = pets
+    @hobbies.setter
+    def hobbies(self, hobbies: set[str]) -> None:
+        """set the possible hobbies."""
+        self.__hobbies__ = hobbies
