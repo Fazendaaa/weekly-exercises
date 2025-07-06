@@ -30,8 +30,15 @@ def test_imaginary_part_of_a_number_with_real_and_imaginary_part() -> None:
     assert 2 == Complex(1, 2).imaginary
 
 
-def test_imaginary_unit() -> None:
-    assert Complex(0, 1) * Complex(0, 1) == Complex(-1, 0)
+# Equality
+
+
+def test_equality_first() -> None:
+    assert Complex(1, 0) == Complex(1, 0)
+
+
+def test_equality_second() -> None:
+    assert Complex(1, 0) != Complex(2, 0)
 
 
 # Arithmetic
@@ -69,6 +76,10 @@ def test_subtract_numbers_with_real_and_imaginary_part() -> None:
 # Multiplication
 
 
+def test_imaginary_unit() -> None:
+    assert Complex(0, 1) * Complex(0, 1) == Complex(-1, 0)
+
+
 def test_multiply_purely_real_numbers() -> None:
     assert Complex(1, 0) * Complex(2, 0) == Complex(2, 0)
 
@@ -100,27 +111,27 @@ def test_divide_numbers_with_real_and_imaginary_part() -> None:
 
 
 def test_absolute_value_of_a_positive_purely_real_number() -> None:
-    assert abs(Complex(5, 0) == 5)
+    assert abs(Complex(5, 0)) == 5
 
 
 def test_absolute_value_of_a_negative_purely_real_number() -> None:
-    assert abs(Complex(-5, 0) == 5)
+    assert abs(Complex(-5, 0)) == 5
 
 
 def test_absolute_value_of_a_purely_imaginary_number_with_positive_imaginary_part() -> (
     None
 ):
-    assert abs(Complex(0, 5) == 5)
+    assert abs(Complex(0, 5)) == 5
 
 
 def test_absolute_value_of_a_purely_imaginary_number_with_negative_imaginary_part() -> (
     None
 ):
-    assert abs(Complex(0, -5) == 5)
+    assert abs(Complex(0, -5)) == 5
 
 
 def test_absolute_value_of_a_number_with_real_and_imaginary_part() -> None:
-    assert abs(Complex(3, 4) == 5)
+    assert abs(Complex(3, 4)) == 5
 
 
 # Complex conjugate
@@ -165,7 +176,7 @@ def test_exponential_resulting_in_a_number_with_real_and_imaginary_part() -> Non
 
 
 def test_add_real_number_to_complex_number() -> None:
-    assert Complex(1, 2) + 5, Complex(6, 2)
+    assert Complex(1, 2) + 5 == Complex(6, 2)
 
 
 def test_add_complex_number_to_real_number() -> None:
@@ -173,7 +184,7 @@ def test_add_complex_number_to_real_number() -> None:
 
 
 def test_subtract_real_number_from_complex_number() -> None:
-    assert Complex(5, 7) - 4, Complex(1, 7)
+    assert Complex(5, 7) - 4 == Complex(1, 7)
 
 
 def test_subtract_complex_number_from_real_number() -> None:
@@ -181,7 +192,7 @@ def test_subtract_complex_number_from_real_number() -> None:
 
 
 def test_multiply_complex_number_by_real_number() -> None:
-    assert Complex(2, 5) * 5, Complex(10, 25)
+    assert Complex(2, 5) * 5 == Complex(10, 25)
 
 
 def test_multiply_real_number_by_complex_number() -> None:
@@ -189,7 +200,7 @@ def test_multiply_real_number_by_complex_number() -> None:
 
 
 def test_divide_complex_number_by_real_number() -> None:
-    assert Complex(10, 100) / 10, Complex(1, 10)
+    assert Complex(10, 100) / 10 == Complex(1, 10)
 
 
 def test_divide_real_number_by_complex_number() -> None:
@@ -204,8 +215,8 @@ def test_equality_of_complex_numbers() -> None:
 
 
 def test_inequality_of_real_part() -> None:
-    assert Complex(1, 2) == Complex(2, 2)
+    assert Complex(1, 2) != Complex(2, 2)
 
 
 def test_inequality_of_imaginary_part() -> None:
-    assert Complex(1, 2) == Complex(1, 1)
+    assert Complex(1, 2) != Complex(1, 1)

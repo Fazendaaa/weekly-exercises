@@ -95,6 +95,137 @@
 #   -https://exercism.org/tracks/python/exercises/complex-numbers
 #
 
+from math import cos, e, sin, sqrt
+from typing import Any
+
 
 class Complex:
-    pass
+
+    def __init__(self, real: int | float, imaginary: int | float) -> None:
+        self.real = real
+        self.imaginary = imaginary
+
+    def __eq__(self, other: "Complex | Any") -> bool:
+        if isinstance(other, Complex):
+            return self.real == other.real and self.imaginary == other.imaginary
+
+        raise ValueError(
+            f"Operation equals not defined for Complex and { type(other) }"
+        )
+
+    def __repr__(self) -> str:
+        return f"Complex(real={self.real}, imaginary={self.imaginary})"
+
+    def __add__(self, other: "Complex | Any") -> "Complex":
+        if isinstance(other, Complex):
+            return Complex(
+                self.real + other.real,
+                self.imaginary + other.imaginary,
+            )
+
+        if isinstance(other, (int, float)):
+            return Complex(
+                self.real + other,
+                self.imaginary,
+            )
+
+        raise ValueError(f"Operation add not defined for Complex and { type(other) }")
+
+    def __radd__(self, other: Any) -> "Complex":
+        if isinstance(other, (int, float)):
+            return Complex(
+                self.real + other,
+                self.imaginary,
+            )
+
+        raise ValueError(f"Operation add not defined for Complex and { type(other) }")
+
+    def __sub__(self, other: "Complex | Any") -> "Complex":
+        if isinstance(other, Complex):
+            return Complex(
+                self.real - other.real,
+                self.imaginary - other.imaginary,
+            )
+
+        if isinstance(other, (int, float)):
+            return Complex(
+                self.real - other,
+                self.imaginary,
+            )
+
+        raise ValueError(
+            f"Operation subtraction not defined for Complex and { type(other) }"
+        )
+
+    def __rsub__(self, other: Any) -> "Complex":
+        if isinstance(other, (int, float)):
+            return Complex(
+                other - self.real,
+                -self.imaginary,
+            )
+
+        raise ValueError(
+            f"Operation subtraction not defined for Complex and { type(other) }"
+        )
+
+    def __mul__(self, other: "Complex | Any") -> "Complex":
+        if isinstance(other, Complex):
+            return Complex(
+                (self.real * other.real) - (self.imaginary * other.imaginary),
+                (self.real * other.imaginary) + (self.imaginary * other.real),
+            )
+
+        if isinstance(other, (int, float)):
+            return Complex(
+                self.real * other,
+                self.imaginary * other,
+            )
+
+        raise ValueError(
+            f"Operation multiplication not defined for Complex and { type(other) }"
+        )
+
+    def __rmul__(self, other: Any) -> "Complex":
+        if isinstance(other, (int, float)):
+            return Complex(
+                self.real * other,
+                self.imaginary * other,
+            )
+
+        raise ValueError(
+            f"Operation multiplication not defined for Complex and { type(other) }"
+        )
+
+    # (a * c + b * d) / (c^2 + d^2) + (b * c - a * d) / (c^2 + d^2) * i
+    def __truediv__(self, other: "Complex | Any") -> "Complex":
+        if isinstance(other, Complex):
+            return Complex(
+                self.__numerator__ * other.__denominator__,
+                self.__denominator__ * other.__numerator__,
+            )
+
+        if isinstance(other, (int, float)):
+            return Complex(
+                self.real * other,
+                self.imaginary * other,
+            )
+
+        raise ValueError(
+            f"Operation division not defined for Complex and { type(other) }"
+        )
+
+    def __abs__(self) -> int | float:
+        return sqrt(self.real**2 + self.imaginary**2)
+
+    def conjugate(self) -> "Complex":
+        return Complex(self.real, -self.imaginary)
+
+    # e^(a + b * i) = e^a * e^(b * i)
+    #               = e^a * (cos(b) + i * sin(b))
+    def exp(self) -> "Complex":
+        base = e**self.real
+
+        return Complex(
+            base * cos(self.imaginary),
+            base * sin(self.imaginary),
+        )
