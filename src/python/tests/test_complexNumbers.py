@@ -1,6 +1,20 @@
-import math
+from math import e, log, pi
+from typing import TypedDict, Unpack
 
+from pytest import approx
 from weekly_exercises.complexNumbers import Complex
+
+
+class ApproxKwargs(TypedDict, total=False):
+    rel: float
+    abs: float
+    nan_ok: bool
+
+
+def complex_approx(c1: Complex, c2: Complex, **kwargs: Unpack[ApproxKwargs]) -> bool:
+    return approx(c1.real, **kwargs) == approx(c2.real, **kwargs) and approx(
+        c1.imaginary, **kwargs
+    ) == approx(c2.imaginary, **kwargs)
 
 
 def test_real_part_of_a_purely_real_number() -> None:
@@ -152,24 +166,24 @@ def test_conjugate_a_number_with_real_and_imaginary_part() -> None:
 # Complex exponential function
 
 
-def test_euler_s_identity_formula() -> None:
-    assert Complex(0, math.pi).exp() == Complex(-1, 0)
-
-
 def test_exponential_of_0() -> None:
     assert Complex(0, 0).exp() == Complex(1, 0)
 
 
+def test_euler_s_identity_formula() -> None:
+    assert complex_approx(Complex(0, pi).exp(), Complex(-1, 0), abs=0.01)
+
+
 def test_exponential_of_a_purely_real_number() -> None:
-    assert Complex(1, 0).exp() == Complex(math.e, 0)
+    assert complex_approx(Complex(1, 0).exp(), Complex(e, 0), abs=0.01)
 
 
 def test_exponential_of_a_number_with_real_and_imaginary_part() -> None:
-    assert Complex(math.log(2) == math.pi).exp() == Complex(-2, 0)
+    assert complex_approx(Complex(log(2), pi).exp(), Complex(-2, 0), abs=0.01)
 
 
 def test_exponential_resulting_in_a_number_with_real_and_imaginary_part() -> None:
-    assert Complex(math.log(2) / 2, math.pi / 4).exp() == Complex(1, 1)
+    assert complex_approx(Complex(log(2) / 2, pi / 4).exp(), Complex(1, 1), abs=0.01)
 
 
 # Operations between real numbers and complex numbers
