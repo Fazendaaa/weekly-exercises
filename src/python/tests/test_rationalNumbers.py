@@ -1,5 +1,22 @@
 from weekly_exercises.rationalNumbers import Rational
 
+# Equality
+
+
+def test_equality_first() -> None:
+    assert Rational(2, 4) == Rational(2, 4)
+
+
+def test_equality_second() -> None:
+    assert Rational(2, 4) == Rational(1, 2)
+
+
+def test_equality_third() -> None:
+    assert Rational(5, 3) != Rational(2, 4)
+
+
+# Addiction
+
 
 def test_add_two_positive_rational_numbers() -> None:
     assert Rational(1, 2) + Rational(2, 3) == Rational(7, 6)
@@ -86,70 +103,70 @@ def test_divide_a_rational_number_by_1() -> None:
 
 
 def test_absolute_value_of_a_positive_rational_number() -> None:
-    assert abs(Rational(1, 2) == Rational(1, 2))
+    assert abs(Rational(1, 2)) == Rational(1, 2)
 
 
 def test_absolute_value_of_a_positive_rational_number_with_negative_numerator_and_denominator() -> (
     None
 ):
-    assert abs(Rational(-1, -2) == Rational(1, 2))
+    assert abs(Rational(-1, -2)) == Rational(1, 2)
 
 
 def test_absolute_value_of_a_negative_rational_number() -> None:
-    assert abs(Rational(-1, 2) == Rational(1, 2))
+    assert abs(Rational(-1, 2)) == Rational(1, 2)
 
 
 def test_absolute_value_of_a_negative_rational_number_with_negative_denominator() -> (
     None
 ):
-    assert abs(Rational(1, -2) == Rational(1, 2))
+    assert abs(Rational(1, -2)) == Rational(1, 2)
 
 
 def test_absolute_value_of_zero() -> None:
-    assert abs(Rational(0, 1) == Rational(0, 1))
+    assert abs(Rational(0, 1)) == Rational(0, 1)
 
 
 def test_absolute_value_of_a_rational_number_is_reduced_to_lowest_terms() -> None:
-    assert abs(Rational(2, 4) == Rational(1, 2))
+    assert abs(Rational(2, 4)) == Rational(1, 2)
 
 
 # Tests of type: Exponentiation of a rational number
 
 
 def test_raise_a_positive_rational_number_to_a_positive_integer_power() -> None:
-    assert Rational(1, 2) ** 3, Rational(1, 8)
+    assert Rational(1, 2) ** 3 == Rational(1, 8)
 
 
 def test_raise_a_negative_rational_number_to_a_positive_integer_power() -> None:
-    assert Rational(-1, 2) ** 3, Rational(-1, 8)
+    assert Rational(-1, 2) ** 3 == Rational(-1, 8)
 
 
 def test_raise_a_positive_rational_number_to_a_negative_integer_power() -> None:
-    assert Rational(3, 5) ** -2, Rational(25, 9)
+    assert Rational(3, 5) ** -2 == Rational(25, 9)
 
 
 def test_raise_a_negative_rational_number_to_an_even_negative_integer_power() -> None:
-    assert Rational(-3, 5) ** -2, Rational(25, 9)
+    assert Rational(-3, 5) ** -2 == Rational(25, 9)
 
 
 def test_raise_a_negative_rational_number_to_an_odd_negative_integer_power() -> None:
-    assert Rational(-3, 5) ** -3, Rational(-125, 27)
+    assert Rational(-3, 5) ** -3 == Rational(-125, 27)
 
 
 def test_raise_zero_to_an_integer_power() -> None:
-    assert Rational(0, 1) ** 5, Rational(0, 1)
+    assert Rational(0, 1) ** 5 == Rational(0, 1)
 
 
 def test_raise_one_to_an_integer_power() -> None:
-    assert Rational(1, 1) ** 4, Rational(1, 1)
+    assert Rational(1, 1) ** 4 == Rational(1, 1)
 
 
 def test_raise_a_positive_rational_number_to_the_power_of_zero() -> None:
-    assert Rational(1, 2) ** 0, Rational(1, 1)
+    assert Rational(1, 2) ** 0 == Rational(1, 1)
 
 
 def test_raise_a_negative_rational_number_to_the_power_of_zero() -> None:
-    assert Rational(-1, 2) ** 0, Rational(1, 1)
+    assert Rational(-1, 2) ** 0 == Rational(1, 1)
 
 
 # Tests of type: Exponentiation of a real number to a rational number
