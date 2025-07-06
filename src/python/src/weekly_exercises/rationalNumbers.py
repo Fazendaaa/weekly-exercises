@@ -135,6 +135,9 @@ class Rational:
             f"Operation equals not defined for Rational and { type(other) }"
         )
 
+    def __repr__(self) -> str:
+        return f"Rational(numerator={self.__numerator__}, denominator={self.__denominator__})"
+
     def __add__(self, other: "Rational | Any") -> "Rational":
         if isinstance(other, Rational):
             return Rational(
