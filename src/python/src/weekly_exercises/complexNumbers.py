@@ -196,18 +196,34 @@ class Complex:
             f"Operation multiplication not defined for Complex and { type(other) }"
         )
 
-    # (a * c + b * d) / (c^2 + d^2) + (b * c - a * d) / (c^2 + d^2) * i
     def __truediv__(self, other: "Complex | Any") -> "Complex":
         if isinstance(other, Complex):
+            real = (self.real * other.real) + (self.imaginary * other.imaginary)
+            imaginary = (self.imaginary * other.real) - (self.real * other.imaginary)
+            denominator = other.real**2 + other.imaginary**2
+
             return Complex(
-                self.__numerator__ * other.__denominator__,
-                self.__denominator__ * other.__numerator__,
+                real / denominator,
+                imaginary / denominator,
             )
 
         if isinstance(other, (int, float)):
             return Complex(
-                self.real * other,
-                self.imaginary * other,
+                self.real / other,
+                self.imaginary / other,
+            )
+
+        raise ValueError(
+            f"Operation division not defined for Complex and { type(other) }"
+        )
+
+    def __rtruediv__(self, other: Any) -> "Complex":
+        if isinstance(other, (int, float)):
+            denominator = self.real**2 + self.imaginary**2
+
+            return Complex(
+                other * self.real / denominator,
+                -other * self.imaginary / denominator,
             )
 
         raise ValueError(
@@ -220,8 +236,6 @@ class Complex:
     def conjugate(self) -> "Complex":
         return Complex(self.real, -self.imaginary)
 
-    # e^(a + b * i) = e^a * e^(b * i)
-    #               = e^a * (cos(b) + i * sin(b))
     def exp(self) -> "Complex":
         base = e**self.real
 

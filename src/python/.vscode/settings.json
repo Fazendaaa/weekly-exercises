@@ -1,6 +1,6 @@
 {
   "editor.formatOnSave": true,
-  "python.testing.pytestArgs": ["-vv", "tests"],
+  "python.testing.pytestArgs": ["-vv", "--showlocals", "tests"],
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
   "python.analysis.extraPaths": ["./src"],

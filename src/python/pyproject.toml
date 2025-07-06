@@ -23,6 +23,7 @@ pylint = "^3.3.7"
 complexipy = "^2.1.1"
 radon = "5.1"
 ruff = "0.11.2"
+pytest-icdiff = "^0.9"
 
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib", "-ra", "-q", "-p", "profiling"]
