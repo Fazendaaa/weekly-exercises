@@ -42,26 +42,33 @@ def alphametics(puzzle: str) -> dict[str, int]:
     Returns:
         dict[str, int]: A dictionary mapping each letter to its assigned digit.
     """
-    # Split the puzzle into words and the result
-    words, result = puzzle.replace(" ", "").split("==")
-    words = words.split("+")
+    equation = puzzle.replace(" ", "").split("==")
+    left = equation[0].split("+")
+    right = equation[1]
+    letters = "".join(set(puzzle.replace(" ", "").replace("+", "").replace("=", "")))
+    first_letters = "".join(set(word[0] for word in left + [right]))
+    digits = range(10)
 
-    # Get the unique letters in the puzzle
-    letters = set("".join(words) + result)
+    for perm in permutations(digits, len(letters)):
+        solution = dict(zip(letters, perm))
+        nums_left: list[int] = []
+        num_right = 0
 
-    # Generate all possible digit assignments for the letters
-    for perm in permutations(range(10), len(letters)):
-        # Skip permutations that start with 0
-        if 0 == perm[letters.index(min(letters))]:
+        if any(0 == solution[letter] for letter in first_letters):
             continue
 
-        # Create a dictionary mapping letters to digits
-        d = dict(zip(letters, perm))
+        for word in left:
+            num = 0
 
-        # Check if the sum of the word values equals the result value
-        if sum(int("".join(str(d[c]) for c in word)) for word in words) == int(
-            "".join(str(d[c]) for c in result)
-        ):
-            return d
+            for c in word:
+                num = num * 10 + solution[c]
+
+            nums_left.append(num)
+
+        for c in right:
+            num_right = num_right * 10 + solution[c]
+
+        if num_right == sum(nums_left):
+            return solution
 
     return {}
