@@ -142,7 +142,7 @@ def test_escaped_closing_bracket_within_property_value_becomes_just_a_closing_br
     assert SGF().parse("(;A[\\]])") == {
         "properties": {
             "A": [
-                "\\]",
+                "]",
             ],
         },
         "children": [],
@@ -161,7 +161,7 @@ def test_escaped_backslash_in_property_value_becomes_just_a_backslash() -> None:
 
 
 def test_opening_bracket_within_property_value_doesn_t_need_to_be_escaped() -> None:
-    assert SGF().parse("(;A[\\\\])") == {
+    assert SGF().parse("(;A[x[y\\]z][foo]B[bar];C[baz])") == {
         "properties": {
             "A": [
                 "x[y]z",

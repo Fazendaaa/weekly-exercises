@@ -127,15 +127,23 @@ class SGF:
         return f"SGF({self.__parsed__})"
 
     def __parse__(self, data: str) -> dict[str, list[str]]:
-        keys: list[str] = []
-        values: list[list[str]] = []
         isKey = True
         isValue = False
         key = ""
         value = ""
+        parsed: dict[str, list[str]] = {}
 
-        for char in data:
+        for index, char in enumerate(data):
             if "\\" == char:
+                if "\\" == data[index - 1]:
+                    if "\\" == data[index + 1]:
+                        value = f"{value}\\"
+                    if "\\" != data[index + 1]:
+                        value = f"{value}{char}"
+                if "n" == data[index + 1]:
+                    value = f"{value}\n"
+                if "t" == data[index + 1]:
+                    value = f"{value}\t"
                 continue
             if "[" != char and "]" != char and isKey:
                 if not char.isupper():
@@ -144,7 +152,7 @@ class SGF:
                 key = f"{key}{char}"
             if "[" == char and isKey:
                 if key:
-                    keys.append(key)
+                    parsed[key] = []
                     key = ""
                 isKey = False
                 isValue = True
@@ -152,22 +160,22 @@ class SGF:
 
             if "]" == char:
                 if value:
-                    values.append([value])
+                    last_key = list(parsed.keys())[-1]
+                    parsed[last_key].append(value)
                     value = ""
                 isValue = False
                 isKey = True
             if isValue:
                 value = f"{value}{char}"
 
-        if (keys or key) and not values:
+        if not parsed:
             raise ValueError("properties without delimiter")
 
-        if len(keys) == len(values):
-            return dict(zip(keys, values))
+        for item in parsed.keys():
+            if 0 == len(parsed[item]):
+                raise ValueError("properties without delimiter")
 
-        return {
-            keys[0]: flatten(values),
-        }
+        return parsed
 
     def __properties__(self, sequence: str) -> None:
         properties, *children = sequence.split(";")[1:]
