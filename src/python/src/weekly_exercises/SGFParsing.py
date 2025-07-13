@@ -108,8 +108,6 @@
 
 from typing import TypedDict
 
-from weekly_exercises.utils import flatten
-
 
 class Parsed(TypedDict):
     properties: dict[str, list[str]]
