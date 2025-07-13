@@ -50,7 +50,6 @@
 # Source
 # - https://en.wikipedia.org/wiki/Transposition_cipher#Rail_Fence_cipher
 # - https://exercism.org/tracks/python/exercises/rail-fence-cipher
-#
 
 
 class RailFence:
@@ -84,15 +83,35 @@ class RailFence:
         if rails == 1:
             return message
 
-        decoded: list[str] = [""] * len(message)
-        rail: int = 0
-        direction: int = 1
+        # Create the rail fence pattern
+        fence = [[None] * len(message) for _ in range(rails)]
+        rail = 0
+        direction = 1
 
+        # Mark positions in fence pattern
         for i in range(len(message)):
-            decoded[i] = message[rail]
+            fence[rail][i] = "*"
             rail += direction
-
-            if rail == 0 or rail == rails - 1:
+            if rail == rails - 1 or rail == 0:
                 direction *= -1
 
-        return "".join(decoded)
+        # Fill in the fence with message characters
+        index = 0
+        for i in range(rails):
+            for j in range(len(message)):
+                if fence[i][j] == "*":
+                    fence[i][j] = message[index]
+                    index += 1
+
+        # Read off in zig-zag pattern
+        rail = 0
+        direction = 1
+        decoded = ""
+
+        for i in range(len(message)):
+            decoded += fence[rail][i]
+            rail += direction
+            if rail == rails - 1 or rail == 0:
+                direction *= -1
+
+        return decoded
