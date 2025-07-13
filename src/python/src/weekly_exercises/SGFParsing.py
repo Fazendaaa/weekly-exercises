@@ -108,6 +108,8 @@
 
 from typing import TypedDict
 
+from weekly_exercises.utils import flatten
+
 
 class Parsed(TypedDict):
     properties: dict[str, list[str]]
@@ -121,11 +123,89 @@ class SGF:
             "children": [],
         }
 
+    def __repr__(self) -> str:
+        return f"SGF({self.__parsed__})"
+
+    def __parse__(self, data: str) -> dict[str, list[str]]:
+        keys: list[str] = []
+        values: list[list[str]] = []
+        isKey = True
+        isValue = False
+        key = ""
+        value = ""
+
+        for char in data:
+            if "\\" == char:
+                continue
+            if "[" != char and "]" != char and isKey:
+                if not char.isupper():
+                    raise ValueError("property must be in uppercase")
+
+                key = f"{key}{char}"
+            if "[" == char and isKey:
+                if key:
+                    keys.append(key)
+                    key = ""
+                isKey = False
+                isValue = True
+                continue
+
+            if "]" == char:
+                if value:
+                    values.append([value])
+                    value = ""
+                isValue = False
+                isKey = True
+            if isValue:
+                value = f"{value}{char}"
+
+        if (keys or key) and not values:
+            raise ValueError("properties without delimiter")
+
+        if len(keys) == len(values):
+            return dict(zip(keys, values))
+
+        return {
+            keys[0]: flatten(values),
+        }
+
+    def __properties__(self, sequence: str) -> None:
+        properties, *children = sequence.split(";")[1:]
+        self.__parsed__["properties"] = self.__parse__(properties)
+
+        if children:
+            self.__parsed__["children"] = [
+                self.__parse__(child) for child in children if child != ""
+            ]
+
+    def __children__(self, children: list[str]) -> None:
+        for child in children:
+            self.__parsed__["children"].append(self.__parse__(child[2:-1]))
+
     def parse(self, sequence: str) -> Parsed:
+        properties = ""
+        child = ""
+        children: list[str] = []
+
         if not sequence or not sequence.startswith("(") or not sequence.endswith(")"):
             raise ValueError("tree missing")
 
-        if ";" not in sequence:
+        if not sequence[1:-1]:
             raise ValueError("tree with no nodes")
+
+        for char in sequence[1:-1]:
+            if ")" == char:
+                child = f"{child}{char}"
+                children.append(child)
+                child = ""
+                continue
+            if "(" == char or child:
+                child = f"{child}{char}"
+                continue
+
+            properties = f"{properties}{char}"
+
+        self.__properties__(properties)
+        self.__children__(children)
 
         return self.__parsed__

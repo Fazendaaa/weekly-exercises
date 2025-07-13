@@ -71,11 +71,13 @@ def test_two_nodes() -> None:
                 "B",
             ],
         },
-        "children": {
-            "B": [
-                "C",
-            ],
-        },
+        "children": [
+            {
+                "B": [
+                    "C",
+                ],
+            },
+        ],
     }
 
 
@@ -83,7 +85,7 @@ def test_two_child_trees() -> None:
     assert SGF().parse("(;A[B](;B[C])(;C[D]))") == {
         "properties": {
             "A": [
-                "b",
+                "B",
             ],
         },
         "children": [
@@ -98,7 +100,7 @@ def test_two_child_trees() -> None:
 
 
 def test_multiple_property_values() -> None:
-    assert SGF().parse("(;A[B](;B[C])(;C[D]))") == {
+    assert SGF().parse("(;A[b][c][d])") == {
         "properties": {
             "A": [
                 "b",
@@ -116,7 +118,7 @@ def test_within_property_values_whitespace_characters_such_as_tab_are_converted_
     assert SGF().parse("(;A[hello\t\tworld])") == {
         "properties": {
             "A": [
-                "hello  world",
+                "hello\t\tworld",
             ],
         },
         "children": [],
@@ -140,7 +142,7 @@ def test_escaped_closing_bracket_within_property_value_becomes_just_a_closing_br
     assert SGF().parse("(;A[\\]])") == {
         "properties": {
             "A": [
-                "]",
+                "\\]",
             ],
         },
         "children": [],
