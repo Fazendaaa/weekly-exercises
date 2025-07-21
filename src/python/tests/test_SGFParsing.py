@@ -73,9 +73,12 @@ def test_two_nodes() -> None:
         },
         "children": [
             {
-                "B": [
-                    "C",
-                ],
+                "properties": {
+                    "B": [
+                        "C",
+                    ],
+                },
+                "children": [],
             },
         ],
     }
@@ -90,10 +93,20 @@ def test_two_child_trees() -> None:
         },
         "children": [
             {
-                "B": ["C"],
+                "properties": {
+                    "B": [
+                        "C",
+                    ],
+                },
+                "children": [],
             },
             {
-                "C": ["D"],
+                "properties": {
+                    "C": [
+                        "D",
+                    ],
+                },
+                "children": [],
             },
         ],
     }
@@ -118,7 +131,7 @@ def test_within_property_values_whitespace_characters_such_as_tab_are_converted_
     assert SGF().parse("(;A[hello\t\tworld])") == {
         "properties": {
             "A": [
-                "hello\t\tworld",
+                "hello  world",
             ],
         },
         "children": [],
@@ -173,9 +186,12 @@ def test_opening_bracket_within_property_value_doesn_t_need_to_be_escaped() -> N
         },
         "children": [
             {
-                "C": [
-                    "baz",
-                ]
+                "properties": {
+                    "C": [
+                        "baz",
+                    ],
+                },
+                "children": [],
             },
         ],
     }
@@ -194,9 +210,12 @@ def test_semicolon_in_property_value_doesn_t_need_to_be_escaped() -> None:
         },
         "children": [
             {
-                "C": [
-                    "baz",
-                ],
+                "properties": {
+                    "C": [
+                        "baz",
+                    ],
+                },
+                "children": [],
             },
         ],
     }
@@ -209,15 +228,16 @@ def test_parentheses_in_property_value_don_t_need_to_be_escaped() -> None:
                 "x(y)z",
                 "foo",
             ],
-            "B": [
-                "bar",
-            ],
+            "B": ["bar"],
         },
         "children": [
             {
-                "C": [
-                    "baz",
-                ],
+                "properties": {
+                    "C": [
+                        "baz",
+                    ],
+                },
+                "children": [],
             },
         ],
     }
@@ -227,7 +247,7 @@ def test_escaped_tab_in_property_value_is_converted_to_space() -> None:
     assert SGF().parse("(;A[hello\\\tworld])") == {
         "properties": {
             "A": [
-                "hello world",
+                "hello\tworld",
             ],
         },
         "children": [],

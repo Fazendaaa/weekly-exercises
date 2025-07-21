@@ -90,7 +90,12 @@ class GradeSchool:
             list[str]: List of student names in the specified grade, or empty
                        list if grade doesn't exist
         """
-        return self.__grades__[grade] if grade in self.__grades__ else []
+        if grade not in self.__grades__:
+            raise ValueError(
+                f"Grade {grade} does not exist in roster. Grades: {self.__grades__.keys()}"
+            )
+
+        return self.__grades__[grade]
 
     def Added(self) -> list[bool]:
         """Get and clear the list of addition attempt results.

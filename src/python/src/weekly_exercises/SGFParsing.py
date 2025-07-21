@@ -106,12 +106,12 @@
 #
 
 
-from typing import TypedDict
+from typing import Typeddict
 
 
-class Parsed(TypedDict):
+class Parsed(Typeddict):
     properties: dict[str, list[str]]
-    children: list[dict[str, list[str]]]
+    children: list["Parsed"]
 
 
 class SGF:
@@ -124,94 +124,214 @@ class SGF:
     def __repr__(self) -> str:
         return f"SGF({self.__parsed__})"
 
-    def __parse__(self, data: str) -> dict[str, list[str]]:
-        isKey = True
-        isValue = False
-        key = ""
-        value = ""
-        parsed: dict[str, list[str]] = {}
+    def __parse_property_value(self, value: str) -> str:
+        result = []
+        i = 0
+        while i < len(value):
+            if value[i] == "\\":
+                if i + 1 < len(value):
+                    next_char = value[i + 1]
+                    if next_char == "\n":
+                        i += 1  # Skip newline after backslash
+                    else:
+                        result.append(next_char)
+                        i += 1
+                else:
+                    result.append("\\")
+            else:
+                if value[i] == "\n":
+                    result.append("\n")
+                elif value[i].isspace():
+                    result.append(" ")
+                else:
+                    result.append(value[i])
+            i += 1
+        return "".join(result)
 
-        for index, char in enumerate(data):
-            if "\\" == char:
-                if "\\" == data[index - 1]:
-                    if "\\" == data[index + 1]:
-                        value = f"{value}\\"
-                    if "\\" != data[index + 1]:
-                        value = f"{value}{char}"
-                if "n" == data[index + 1]:
-                    value = f"{value}\n"
-                if "t" == data[index + 1]:
-                    value = f"{value}\t"
-                continue
-            if "[" != char and "]" != char and isKey:
-                if not char.isupper():
-                    raise ValueError("property must be in uppercase")
+    def __parse_properties(self, data: str) -> dict[str, list[str]]:
+        if not data:
+            return {}
 
-                key = f"{key}{char}"
-            if "[" == char and isKey:
-                if key:
-                    parsed[key] = []
-                    key = ""
-                isKey = False
-                isValue = True
-                continue
+        properties: dict[str, list[str]] = {}
+        current_key = []
+        current_value = []
+        state = "key"
+        escaped = False
 
-            if "]" == char:
-                if value:
-                    last_key = list(parsed.keys())[-1]
-                    parsed[last_key].append(value)
-                    value = ""
-                isValue = False
-                isKey = True
-            if isValue:
-                value = f"{value}{char}"
+        i = 0
+        while i < len(data):
+            char = data[i]
 
-        if not parsed:
+            if state == "key":
+                if char == "[" and not escaped:
+                    if not current_key:
+                        raise ValueError("properties without key")
+                    key = "".join(current_key)
+                    if not key.isupper():
+                        raise ValueError("property must be in uppercase")
+                    properties[key] = []
+                    current_key = []
+                    state = "value"
+                    current_value = []
+                else:
+                    if char == "\\" and not escaped:
+                        escaped = True
+                    else:
+                        current_key.append(char)
+                        escaped = False
+
+            elif state == "value":
+                if char == "\\" and not escaped:
+                    escaped = True
+                    current_value.append(char)
+                elif escaped:
+                    escaped = False
+                    current_value.append(char)
+                elif char == "]" and not escaped:
+                    processed_value = self.__parse_property_value(
+                        "".join(current_value)
+                    )
+                    properties[key].append(processed_value)
+                    current_value = []
+                    state = "between"
+                else:
+                    current_value.append(char)
+
+            elif state == "between":
+                if char == "[" and not escaped:
+                    state = "value"
+                    current_value = []
+                else:
+                    if char == "\\" and not escaped:
+                        escaped = True
+                    else:
+                        current_key.append(char)
+                        escaped = False
+                    state = "key"
+
+            i += 1
+
+        if state == "value" and current_value:
+            raise ValueError("unterminated property value")
+        if state == "key" and current_key:
             raise ValueError("properties without delimiter")
 
-        for item in parsed.keys():
-            if 0 == len(parsed[item]):
-                raise ValueError("properties without delimiter")
+        if not properties:
+            raise ValueError("properties without delimiter")
 
-        return parsed
-
-    def __properties__(self, sequence: str) -> None:
-        properties, *children = sequence.split(";")[1:]
-        self.__parsed__["properties"] = self.__parse__(properties)
-
-        if children:
-            self.__parsed__["children"] = [
-                self.__parse__(child) for child in children if child != ""
-            ]
-
-    def __children__(self, children: list[str]) -> None:
-        for child in children:
-            self.__parsed__["children"].append(self.__parse__(child[2:-1]))
+        return properties
 
     def parse(self, sequence: str) -> Parsed:
-        properties = ""
-        child = ""
-        children: list[str] = []
-
         if not sequence or not sequence.startswith("(") or not sequence.endswith(")"):
             raise ValueError("tree missing")
 
-        if not sequence[1:-1]:
+        content = sequence[1:-1]
+        if not content:
             raise ValueError("tree with no nodes")
 
-        for char in sequence[1:-1]:
-            if ")" == char:
-                child = f"{child}{char}"
-                children.append(child)
-                child = ""
-                continue
-            if "(" == char or child:
-                child = f"{child}{char}"
-                continue
+        # Split into nodes
+        nodes = []
+        current_node = []
+        stack = []
+        i = 0
+        in_property = False
+        escaped = False
 
-            properties = f"{properties}{char}"
+        while i < len(content):
+            char = content[i]
 
-        self.__properties__(properties)
-        self.__children__(children)
+            if char == "\\" and not escaped:
+                escaped = True
+                current_node.append(char)
+            elif escaped:
+                escaped = False
+                current_node.append(char)
+            else:
+                if char == "[" and not escaped:
+                    in_property = True
+                elif char == "]" and not escaped:
+                    in_property = False
+
+                if char == "(" and not in_property:
+                    if not stack:
+                        if current_node:
+                            nodes.append("".join(current_node))
+                            current_node = []
+                    stack.append(i)
+                elif char == ")" and not in_property:
+                    if stack:
+                        stack.pop()
+                    if not stack:
+                        nodes.append("".join(current_node))
+                        current_node = []
+                        i += 1
+                        continue
+
+                current_node.append(char)
+
+            i += 1
+
+        if stack:
+            raise ValueError("unmatched opening parenthesis")
+
+        if current_node:
+            nodes.append("".join(current_node))
+
+        if not nodes:
+            raise ValueError("invalid tree structure")
+
+        # Parse the first node
+        if not nodes[0].startswith(";"):
+            raise ValueError("invalid node format")
+
+        # Split sequential nodes
+        main_nodes = []
+        current = []
+        in_property = False
+        escaped = False
+
+        for char in nodes[0][1:]:  # Skip initial ';'
+            if char == "\\" and not escaped:
+                escaped = True
+                current.append(char)
+            elif escaped:
+                escaped = False
+                current.append(char)
+            else:
+                if char == "[" and not escaped:
+                    in_property = True
+                elif char == "]" and not escaped:
+                    in_property = False
+
+                if char == ";" and not in_property:
+                    if current:
+                        main_nodes.append("".join(current))
+                        current = []
+                    continue
+
+                current.append(char)
+
+        if current:
+            main_nodes.append("".join(current))
+
+        # Parse properties from first node
+        if not main_nodes:
+            raise ValueError("no properties in node")
+
+        self.__parsed__["properties"] = self.__parse_properties(main_nodes[0])
+
+        # Parse sequential nodes as children
+        for node_content in main_nodes[1:]:
+            child_parser = SGF()
+            child_parsed = child_parser.parse(f"(;{node_content})")
+            self.__parsed__["children"].append(child_parsed)
+
+        # Parse variations
+        for variation in nodes[1:]:
+            if not (variation.startswith("(") and variation.endswith(")")):
+                raise ValueError("invalid variation format")
+            child_parser = SGF()
+            child_parsed = child_parser.parse(variation)
+            self.__parsed__["children"].append(child_parsed)
 
         return self.__parsed__
