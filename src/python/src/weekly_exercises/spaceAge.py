@@ -119,6 +119,6 @@ class SpaceAge:
                 self,
                 f"on_{planet.lower()}",
                 lambda orbital_period=orbital_period: round(
-                    self.__seconds__ / 31557600 / orbital_period, 2
+                    self.__seconds__ / 31_557_600 / orbital_period, 2
                 ),
             )
