@@ -80,3 +80,7 @@ sonar:
 		-Dsonar.sources=. \
 		-Dsonar.host.url=https://sonarqube.docker.localhost/ \
 		-Dsonar.login=${SONARQUBE_PROJECT_KEY}
+
+profiling:
+	@poetry run pytest --profile-svg && \
+		poetry run python -m snakeviz prof/combined.prof

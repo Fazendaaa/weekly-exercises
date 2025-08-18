@@ -81,13 +81,14 @@ class Gigasecond:
 
     """
 
+    GIGASECOND = 10**9
+
     def __init__(self, moment: datetime) -> None:
         """Initialize a Gigasecond object with a starting datetime.
 
         Args:
             moment (datetime): The starting date and time
         """
-        self.__gigasecond__ = 10**9
         self.__moment__ = moment
 
     def add(self, times: int = 1) -> datetime:
@@ -99,4 +100,4 @@ class Gigasecond:
         Returns:
             datetime: The date and time after adding the specified number of gigaseconds
         """
-        return self.__moment__ + timedelta(seconds=self.__gigasecond__ * times)
+        return self.__moment__ + timedelta(seconds=self.GIGASECOND * times)

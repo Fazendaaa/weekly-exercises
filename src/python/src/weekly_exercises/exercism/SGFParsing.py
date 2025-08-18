@@ -106,10 +106,10 @@
 #
 
 
-from typing import Typeddict
+from typing import TypedDict
 
 
-class Parsed(Typeddict):
+class Parsed(TypedDict):
     properties: dict[str, list[str]]
     children: list["Parsed"]
 
