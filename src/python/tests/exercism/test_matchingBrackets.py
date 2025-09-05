@@ -1,4 +1,4 @@
-from typing import Any, Callable, Optional, TypeVar, cast
+from typing import Any, Callable, Optional, TypeVar
 
 import pytest
 from weekly_exercises.exercism.matchingBrackets import ENGINES, MatchingBrackets
@@ -132,6 +132,10 @@ def test_unopened_closing_brackets(engine: ENGINES) -> None:
     assert not MatchingBrackets("{[)][]}").isPaired(engine)
 
 
+@parametrize_all(
+    "engine",
+    ENGINES_TEST,
+)
 def test_unpaired_and_nested_brackets(engine: ENGINES) -> None:
     assert not MatchingBrackets("([{])").isPaired(engine)
 

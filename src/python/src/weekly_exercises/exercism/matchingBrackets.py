@@ -95,9 +95,15 @@ class MatchingBrackets:
         Returns:
             bool: True if brackets are balanced, False otherwise.
         """
+        pairs = {
+            ")": "(",
+            "]": "[",
+            "}": "{",
+        }
 
         def __recursive_helper__(
             sentence: str,
+            last: str = "",
         ) -> bool:
             """
             Helper function for recursive bracket matching.
@@ -109,19 +115,15 @@ class MatchingBrackets:
                 bool: True if brackets are balanced, False otherwise.
             """
             if not sentence:
-                return True
-
-            if sentence[0] in ")]}":
-                return False
+                return not last
 
             if sentence[0] in "([{":
-                closing = ")]}"["([{".index(sentence[0])]
-                index = sentence.find(closing)
+                return __recursive_helper__(sentence[1:], sentence[0])
 
-                if index == -1:
+            if sentence[0] in ")]}":
+                if not last or last != pairs[sentence[0]]:
                     return False
-
-                return __recursive_helper__(sentence[1:index] + sentence[index + 1 :])
+                return __recursive_helper__(sentence[1:], sentence[0])
 
             return __recursive_helper__(sentence[1:])
 
@@ -134,18 +136,49 @@ class MatchingBrackets:
         Returns:
             bool: True if brackets are balanced, False otherwise.
         """
-        state = 0
+        lastState = 0
+        actualState = 0
+        PARENTHESIS = 1
+        SQUARE_BRACKETS = 2
+        CURLY_BRACES = 3
 
         for char in self.__sentence__:
-            if char in "([{":
-                state += 1
-            if char in ")]}":
-                state -= 1
+            if "(" == char:
+                actualState += PARENTHESIS
+                lastState = PARENTHESIS
+            if "[" == char:
+                actualState += SQUARE_BRACKETS
+                lastState = SQUARE_BRACKETS
+            if "{" == char:
+                actualState += CURLY_BRACES
+                lastState = CURLY_BRACES
 
-            if state < 0:
+            if ")" == char:
+                actualState -= PARENTHESIS
+
+                if lastState and lastState != PARENTHESIS:
+                    return False
+                else:
+                    lastState = 0
+            if "]" == char:
+                actualState -= SQUARE_BRACKETS
+
+                if lastState and lastState != SQUARE_BRACKETS:
+                    return False
+                else:
+                    lastState = 0
+            if "}" == char:
+                actualState -= CURLY_BRACES
+
+                if lastState and lastState != CURLY_BRACES:
+                    return False
+                else:
+                    lastState = 0
+
+            if actualState < 0:
                 return False
 
-        return 0 == state
+        return 0 == actualState
 
     def isPaired(
         self,
