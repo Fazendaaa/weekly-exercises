@@ -105,13 +105,20 @@ from typing import Any
 
 class Rational:
 
-    def __init__(self, numerator: int | float, denominator: int | float) -> None:
+    def __init__(
+        self,
+        numerator: int | float,
+        denominator: int | float,
+    ) -> None:
         if not denominator:
             raise ValueError("Denominator cannot be zero")
 
         self.__numerator__ = int(numerator)
         self.__denominator__ = int(denominator)
         self.__summarize__()
+
+    def __repr__(self) -> str:
+        return f"Rational(numerator={self.__numerator__}, denominator={self.__denominator__})"
 
     def __summarize__(self) -> None:
         if (self.__numerator__ < 0 and self.__denominator__ < 0) or (
@@ -124,7 +131,10 @@ class Rational:
             self.__numerator__ = int(self.__numerator__ / result)
             self.__denominator__ = int(self.__denominator__ / result)
 
-    def __eq__(self, other: "Rational | Any") -> bool:
+    def __eq__(
+        self,
+        other: "Rational | Any",
+    ) -> bool:
         if isinstance(other, Rational):
             return (
                 self.__numerator__ == other.__numerator__
@@ -135,10 +145,10 @@ class Rational:
             f"Operation equals not defined for Rational and { type(other) }"
         )
 
-    def __repr__(self) -> str:
-        return f"Rational(numerator={self.__numerator__}, denominator={self.__denominator__})"
-
-    def __add__(self, other: "Rational | Any") -> "Rational":
+    def __add__(
+        self,
+        other: "Rational | Any",
+    ) -> "Rational":
         if isinstance(other, Rational):
             return Rational(
                 self.__numerator__ * other.__denominator__
@@ -148,7 +158,10 @@ class Rational:
 
         raise ValueError(f"Operation add not defined for Rational and { type(other) }")
 
-    def __sub__(self, other: "Rational | Any") -> "Rational":
+    def __sub__(
+        self,
+        other: "Rational | Any",
+    ) -> "Rational":
         if isinstance(other, Rational):
             return Rational(
                 self.__numerator__ * other.__denominator__
@@ -160,7 +173,10 @@ class Rational:
             f"Operation subtraction not defined for Rational and { type(other) }"
         )
 
-    def __mul__(self, other: "Rational | Any") -> "Rational":
+    def __mul__(
+        self,
+        other: "Rational | Any",
+    ) -> "Rational":
         if isinstance(other, Rational):
             return Rational(
                 self.__numerator__ * other.__numerator__,
@@ -171,7 +187,10 @@ class Rational:
             f"Operation multiplication not defined for Rational and { type(other) }"
         )
 
-    def __truediv__(self, other: "Rational | Any") -> "Rational":
+    def __truediv__(
+        self,
+        other: "Rational | Any",
+    ) -> "Rational":
         if isinstance(other, Rational):
             return Rational(
                 self.__numerator__ * other.__denominator__,
@@ -182,7 +201,10 @@ class Rational:
             f"Operation division not defined for Rational and { type(other) }"
         )
 
-    def __pow__(self, other: "Rational | Any") -> "Rational":
+    def __pow__(
+        self,
+        other: "Rational | Any",
+    ) -> "Rational":
         if isinstance(other, int):
             if 0 > other:
                 power = -other
@@ -205,5 +227,8 @@ class Rational:
             self.__denominator__ if self.__denominator__ > 0 else -self.__denominator__,
         )
 
-    def __rpow__(self, other: int | float) -> float:
+    def __rpow__(
+        self,
+        other: int | float,
+    ) -> float:
         return (other ** (1 / self.__denominator__)) ** self.__numerator__
