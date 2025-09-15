@@ -65,14 +65,19 @@ class Diamond:
         __letters__ (list): List of letters from 'A' to the target letter
     """
 
-    def __init__(self, letter: str) -> None:
+    def __init__(
+        self,
+        letter: str,
+    ) -> None:
         """Initialize the Diamond class with a target letter.
 
         Args:
             letter (str): The letter that will form the widest point of the diamond
         """
         self.__letter__ = letter.upper()
-        self.__letters__ = [chr(i) for i in range(ord("A"), ord(letter) + 1)]
+        self.__letters__ = [
+            chr(index) for index in range(ord("A"), ord(self.__letter__) + 1)
+        ]
 
     def make_diamond(self) -> list[str]:
         """Generate the diamond pattern of letters.
@@ -118,6 +123,4 @@ class Diamond:
 
             diamond.append(row)
 
-        diamond = diamond + diamond[-2::-1]
-
-        return diamond
+        return diamond + diamond[-2::-1]
