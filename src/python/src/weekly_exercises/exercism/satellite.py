@@ -54,6 +54,8 @@
 #   - https://exercism.org/tracks/python/exercises/satellite
 #
 
+from __future__ import annotations
+
 from typing import Optional, TypedDict
 
 
@@ -77,14 +79,14 @@ def treeFromTraversals(
         return {}
 
     root = preorder[0]
-    root_index = inorder.index(root)
-    left_inorder = inorder[:root_index]
-    right_inorder = inorder[root_index + 1 :]
-    left_preorder = preorder[1 : len(left_inorder) + 1]
-    right_preorder = preorder[len(left_inorder) + 1 :]
+    rootIndex = inorder.index(root)
+    leftInorder = inorder[:rootIndex]
+    rightInorder = inorder[rootIndex + 1 :]
+    leftPreorder = preorder[1 : len(leftInorder) + 1]
+    rightPreorder = preorder[len(leftInorder) + 1 :]
 
     return {
         "value": root,
-        "left": treeFromTraversals(left_preorder, left_inorder),
-        "right": treeFromTraversals(right_preorder, right_inorder),
+        "left": treeFromTraversals(leftPreorder, leftInorder),
+        "right": treeFromTraversals(rightPreorder, rightInorder),
     }

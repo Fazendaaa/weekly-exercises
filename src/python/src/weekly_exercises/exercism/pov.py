@@ -61,6 +61,7 @@
 #   - https://exercism.org/tracks/python/exercises/pov
 #
 
+from __future__ import annotations
 
 from typing import Optional
 
@@ -69,7 +70,146 @@ class Tree:
     def __init__(
         self,
         label: str,
-        children: "Optional[Tree]" = None,
+        children: "Optional[list[Tree]]" = None,
     ) -> None:
         self.label = label
         self.children = children if children is not None else []
+
+    def __repr__(self) -> str:
+        return f"Tree(label={self.label}, children={self.children})"
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Tree):
+            return False
+        return (
+            self.label == other.label
+            and len(self.children) == len(other.children)
+            and all(c1 == c2 for c1, c2 in zip(self.children, other.children))
+        )
+
+    def from_pov(
+        self,
+        from_node: str,
+    ) -> "Tree":
+        # Build parent mapping and find all nodes
+        parent_map: dict[str, Optional[str]] = {}
+        node_map: dict[str, Tree] = {}
+        self._build_maps(None, parent_map, node_map)
+
+        if from_node not in node_map:
+            raise ValueError("Tree could not be reoriented")
+
+        # Build the new tree using BFS from the target node
+        return self._build_new_tree(from_node, parent_map, node_map)
+
+    def path_to(
+        self,
+        from_node: str,
+        to_node: str,
+    ) -> list[str]:
+        # Build parent mapping and find all nodes
+        parent_map: dict[str, Optional[str]] = {}
+        node_map: dict[str, Tree] = {}
+        self._build_maps(None, parent_map, node_map)
+
+        if from_node not in node_map or to_node not in node_map:
+            raise ValueError("No path found")
+
+        # Find path using BFS
+        path = self._find_path_bfs(from_node, to_node, parent_map, node_map)
+        if not path:
+            raise ValueError("No path found")
+
+        return path
+
+    def _build_maps(
+        self,
+        parent: "Optional[Tree]",
+        parent_map: dict[str, Optional[str]],
+        node_map: dict[str, Tree],
+    ) -> None:
+        node_map[self.label] = self
+        parent_map[self.label] = parent.label if parent else None
+
+        for child in self.children:
+            child._build_maps(self, parent_map, node_map)
+
+    def _build_new_tree(
+        self,
+        root_label: str,
+        parent_map: dict[str, Optional[str]],
+        node_map: dict[str, Tree],
+    ) -> "Tree":
+        # Use BFS to build the tree to avoid recursion depth issues
+        from collections import deque
+
+        # Create new nodes without children first
+        new_nodes = {}
+        for label in node_map:
+            new_nodes[label] = Tree(label)
+
+        # Build the tree structure using BFS from the new root
+        visited = set()
+        queue = deque([root_label])
+        visited.add(root_label)
+
+        while queue:
+            current_label = queue.popleft()
+            current_node = new_nodes[current_label]
+
+            # Add children: original children + parent (except the path we came from)
+            original_node = node_map[current_label]
+
+            # Add original children (except those that are parents in the new tree)
+            for child in original_node.children:
+                if child.label not in visited and child.label != parent_map.get(
+                    current_label
+                ):
+                    current_node.children.append(new_nodes[child.label])
+                    queue.append(child.label)
+                    visited.add(child.label)
+
+            # Add parent as a child (if exists and not already visited)
+            parent_label = parent_map.get(current_label)
+            if parent_label and parent_label not in visited:
+                current_node.children.append(new_nodes[parent_label])
+                queue.append(parent_label)
+                visited.add(parent_label)
+
+        return new_nodes[root_label]
+
+    def _find_path_bfs(
+        self,
+        start: str,
+        end: str,
+        parent_map: dict[str, Optional[str]],
+        node_map: dict[str, Tree],
+    ) -> list[str]:
+        from collections import deque
+
+        # BFS to find shortest path
+        visited = set()
+        queue = deque([(start, [start])])
+        visited.add(start)
+
+        while queue:
+            current_label, path = queue.popleft()
+
+            if current_label == end:
+                return path
+
+            current_node = node_map[current_label]
+
+            # Check original children
+            for child in current_node.children:
+                if child.label not in visited:
+                    visited.add(child.label)
+                    queue.append((child.label, path + [child.label]))
+
+            # Check parent
+            parent_label = parent_map.get(current_label)
+            if parent_label and parent_label not in visited:
+                visited.add(parent_label)
+                queue.append((parent_label, path + [parent_label]))
+
+        return []
