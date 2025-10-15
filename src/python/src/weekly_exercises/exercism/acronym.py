@@ -25,7 +25,13 @@ from re import IGNORECASE, sub
 
 
 def abbreviate(value: str) -> str:
-    clean = sub(r",|_|-", " ", value, flags=IGNORECASE)
-    items = clean.split(" ")
+    empty = sub(r",|_", "", value, flags=IGNORECASE)
+    clean = sub(r"-", " ", empty, flags=IGNORECASE)
 
-    return "".join([item[0].upper() for item in items if item[0].isalpha()])
+    return "".join(
+        [
+            item[0].upper()
+            for item in clean.split(" ")
+            if len(item) and item[0].isalpha()
+        ]
+    )
