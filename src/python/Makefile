@@ -84,3 +84,11 @@ sonar:
 profiling:
 	@poetry run pytest --profile-svg && \
 		poetry run python -m snakeviz prof/combined.prof
+
+semgrep:
+	@docker run \
+		--rm \
+		--env SEMGREP_APP_TOKEN=${SEMGREP_APP_TOKEN} \
+		--volume "${PWD}/../../:/src" \
+		semgrep/semgrep \
+		semgrep ci --subdir=src/python
