@@ -25,6 +25,29 @@ from re import IGNORECASE, sub
 
 
 def abbreviate(value: str) -> str:
+    """
+    Convert a phrase to its acronym by taking the first letter of each word.
+
+    Args:
+        value (str): The input phrase to convert to an acronym
+
+    Returns:
+        str: The acronym created from the first letter of each word, in uppercase
+
+    Examples:
+        >>> abbreviate("As Soon As Possible")
+        'ASAP'
+        >>> abbreviate("Liquid-crystal display")
+        'LCD'
+        >>> abbreviate("Thank George It's Friday!")
+        'TGIF'
+
+    Notes:
+        - Hyphens are treated as word separators (like spaces)
+        - Commas and underscores are removed from input
+        - Only words starting with letters are included in acronym
+        - All punctuation except hyphens is ignored
+    """
     empty = sub(r",|_", "", value, flags=IGNORECASE)
     clean = sub(r"-", " ", empty, flags=IGNORECASE)
 
