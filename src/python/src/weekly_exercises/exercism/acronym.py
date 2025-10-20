@@ -48,6 +48,10 @@ def abbreviate(value: str) -> str:
         - Only words starting with letters are included in acronym
         - All punctuation except hyphens is ignored
     """
+
+    if not value:
+        raise ValueError("Input cannot be empty")
+
     empty = sub(r",|_", "", value, flags=IGNORECASE)
     clean = sub(r"-", " ", empty, flags=IGNORECASE)
 

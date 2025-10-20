@@ -1,4 +1,10 @@
+from pytest import raises
 from weekly_exercises.exercism.acronym import abbreviate
+
+
+def test_error() -> None:
+    with raises(ValueError, match="Input cannot be empty"):
+        assert abbreviate("")
 
 
 def test_basic() -> None:
