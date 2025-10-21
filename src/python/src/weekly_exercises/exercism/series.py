@@ -58,6 +58,27 @@ def slices(
     series: str,
     slice: int,
 ) -> list[str]:
+    """Extract all contiguous substrings of specified length from input string.
+
+    Args:
+        series (str): Input string of digits to extract substrings from
+        slice (int): Length of substrings to extract
+
+    Returns:
+        list[str]: List of all contiguous substrings of specified length
+
+    Raises:
+        ValueError: If slice length is zero
+        ValueError: If slice length is negative
+        ValueError: If input series is empty
+        ValueError: If slice length is greater than series length
+
+    Examples:
+        >>> slices("49142", 3)
+        ['491', '914', '142']
+        >>> slices("49142", 4)
+        ['4914', '9142']
+    """
     if not slice:
         raise ValueError("slice length cannot be zero")
     if 0 > slice:
