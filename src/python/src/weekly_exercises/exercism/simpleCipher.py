@@ -69,26 +69,57 @@
 #     - https://exercism.org/tracks/python/exercises/simple-cipher
 #
 
-
 from itertools import cycle
 from random import choice
 from string import ascii_lowercase
 
 
 class Cipher:
+    """A class implementing the Vigenère cipher for text encryption and decryption.
+
+    The Vigenère cipher is a polyalphabetic substitution cipher that uses a key to
+    shift each letter in the plaintext by varying amounts.
+
+    Attributes:
+        key (str): The encryption/decryption key. If not provided, a random 100-character
+            key is generated using lowercase letters.
+    """
+
     def __init__(
         self,
         key: str = "",
     ) -> None:
+        """Initialize a new Cipher instance.
+
+        Args:
+            key (str, optional): The encryption/decryption key. Defaults to an empty string,
+                in which case a random 100-character key is generated.
+        """
         self.key = key if key else "".join(choice(ascii_lowercase) for _ in range(100))
 
     def __repr__(self) -> str:
+        """Return a string representation of the Cipher instance.
+
+        Returns:
+            str: A string showing the class name and encryption key.
+        """
         return f"Cipher({self.key})"
 
     def encode(
         self,
         text: str,
     ) -> str:
+        """Encode plaintext using the Vigenère cipher.
+
+        Each letter in the plaintext is shifted based on the corresponding letter in the key.
+        The key is repeated if it's shorter than the plaintext.
+
+        Args:
+            text (str): The plaintext to encode.
+
+        Returns:
+            str: The encoded ciphertext.
+        """
         result: list[str] = []
 
         for char, key in zip(text, cycle(self.key)):
@@ -103,6 +134,17 @@ class Cipher:
         self,
         text: str,
     ) -> str:
+        """Decode ciphertext back to plaintext using the Vigenère cipher.
+
+        Each letter in the ciphertext is shifted back based on the corresponding letter
+        in the key. The key is repeated if it's shorter than the ciphertext.
+
+        Args:
+            text (str): The ciphertext to decode.
+
+        Returns:
+            str: The decoded plaintext.
+        """
         result: list[str] = []
 
         for char, key_char in zip(text, cycle(self.key)):
