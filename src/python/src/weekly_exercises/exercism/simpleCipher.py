@@ -122,7 +122,7 @@ class Cipher:
         """
         result: list[str] = []
 
-        for char, key in zip(text, cycle(self.key)):
+        for char, key in zip(text.lower(), cycle(self.key)):
             shift = ord(key) - ord("a")
             newChar = ord(char) + shift
 
@@ -147,7 +147,7 @@ class Cipher:
         """
         result: list[str] = []
 
-        for char, key_char in zip(text, cycle(self.key)):
+        for char, key_char in zip(text.lower(), cycle(self.key)):
             shift = ord(key_char) - ord("a")
             newChar = ord(char) - shift
 
